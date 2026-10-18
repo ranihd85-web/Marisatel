@@ -657,20 +657,34 @@
       maxZoom: 18
     }).addTo(map);
 // Images satellites NASA via WMS
-const nasaSatellite = L.tileLayer.wms(
-  "https://gibs.earthdata.nasa.gov/wms/epsg3857/best/wms.cgi",
-  {
-    layers: "VIIRS_SNPP_CorrectedReflectance_TrueColor",
-    format: "image/jpeg",
-    transparent: false,
-    version: "1.1.1",
-    time: "2026-10-17",
-    attribution: "Images satellites : NASA GIBS"
-  }
-);
+```javascript
+```javascript
+    // Couche d'imagerie satellitaire NASA
+    const nasaSatellite = L.tileLayer.wms(
+      "https://gibs.earthdata.nasa.gov/wms/epsg3857/best/wms.cgi",
+      {
+        layers: "VIIRS_SNPP_CorrectedReflectance_TrueColor",
+        format: "image/jpeg",
+        transparent: false,
+        version: "1.1.1",
+        time: "2026-10-17",
+        attribution: "Images satellites : NASA GIBS",
+        opacity: 1
+      }
+    );
 
+    const carteClassique = L.tileLayer(
+      "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+      {
+        attribution: "&copy; OpenStreetMap",
+        maxZoom: 18
+      }
+    );
+    carteClassique.addTo(map);
 L.control.layers(
-  null,
+  {
+    "Carte classique": carteClassique
+  },
   {
     "Image satellite NASA": nasaSatellite
   }
