@@ -656,6 +656,22 @@
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>',
       maxZoom: 18
     }).addTo(map);
+    // Image satellite NASA Aqua MODIS
+const nasaSatellite = L.tileLayer(
+  "https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/MODIS_Aqua_CorrectedReflectance_TrueColor/default/2026-10-17/GoogleMapsCompatible_Level9/{z}/{y}/{x}.jpg",
+  {
+    attribution: "Images satellites : NASA GIBS",
+    opacity: 0.8,
+    maxZoom: 9
+  }
+);
+
+L.control.layers(
+  null,
+  {
+    "Image satellite NASA": nasaSatellite
+  }
+).addTo(map);
 
     const locations = [
       {
