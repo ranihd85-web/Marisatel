@@ -656,10 +656,19 @@
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>',
       maxZoom: 18
     }).addTo(map);
-// Images satellites NASA via WMS
-```javascript
-```javascript
-    // Couche d'imagerie satellitaire NASA
+    // Carte interactive
+    const map = L.map("map").setView([36.45, 2.3], 7);
+
+    // Carte classique
+    const carteClassique = L.tileLayer(
+      "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+      {
+        attribution: '&copy; OpenStreetMap',
+        maxZoom: 18
+      }
+    ).addTo(map);
+
+    // Image satellite NASA
     const nasaSatellite = L.tileLayer.wms(
       "https://gibs.earthdata.nasa.gov/wms/epsg3857/best/wms.cgi",
       {
@@ -668,28 +677,20 @@
         transparent: false,
         version: "1.1.1",
         time: "2026-06-23",
-        attribution: "Images satellites : NASA GIBS",
+        attribution: "NASA GIBS",
         opacity: 1
       }
     );
 
-    const carteClassique = L.tileLayer(
-      "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+    // Choix du fond de carte
+    L.control.layers(
       {
-        attribution: "&copy; OpenStreetMap",
-        maxZoom: 18
+        "Carte classique": carteClassique,
+        "Image satellite NASA": nasaSatellite
       }
-    );
-    carteClassique.addTo(map);
-L.control.layers(
-  {
-    "Carte classique": carteClassique
-  },
-  {
-    "Image satellite NASA": nasaSatellite
-  }
-).addTo(map);
- 
+    ).addTo(map);
+
+    // Emplacements indicatifs
     const locations = [
       {
         name: "Béni Haoua",
@@ -709,10 +710,14 @@ L.control.layers(
     ];
 
     locations.forEach(function(site) {
-      L.marker(site.coords).addTo(map)
-        .bindPopup("<strong>" + site.name + "</strong><br>" + site.text);
+      L.marker(site.coords)
+        .addTo(map)
+        .bindPopup(
+          "<strong>" + site.name + "</strong><br>" + site.text
+        );
     });
 
+    // Afficher les coordonnées au clic
     map.on("click", function(event) {
       const lat = event.latlng.lat.toFixed(5);
       const lon = event.latlng.lng.toFixed(5);
@@ -724,13 +729,17 @@ L.control.layers(
 
       L.popup()
         .setLatLng(event.latlng)
-        .setContent("Point sélectionné<br>Latitude : " + lat + "<br>Longitude : " + lon)
+        .setContent(
+          "Point sélectionné<br>Latitude : " + lat +
+          "<br>Longitude : " + lon
+        )
         .openOn(map);
     });
-  } else {
-    mapElement.innerHTML =
-      '<p style="padding:20px;color:#10283a">La carte nécessite une connexion Internet pour charger ses composants.</p>';
-  }
+
+    // Actualiser la taille de la carte
+    setTimeout(function() {
+      map.invalidateSize();
+    }, 300);
 
   function analyserSite() {
     const zone = document.getElementById("zone").value;
