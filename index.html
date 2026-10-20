@@ -861,6 +861,52 @@ function couleurSST(temperature) {
   });
 
   coucheSST.addTo(map);
+    // Légende des températures de surface de la mer (SST)
+const legendeSST = L.control({ position: "bottomleft" });
+
+legendeSST.onAdd = function () {
+  const div = L.DomUtil.create("div", "legende-sst");
+
+  const categories = [
+    { couleur: "#2878b5", texte: "< 18 °C" },
+    { couleur: "#35a853", texte: "18 à < 21 °C" },
+    { couleur: "#f4d03f", texte: "21 à < 24 °C" },
+    { couleur: "#ff8755", texte: "24 à < 27 °C" },
+    { couleur: "#d93025", texte: "≥ 27 °C" }
+  ];
+
+  div.style.background = "white";
+  div.style.padding = "10px 12px";
+  div.style.borderRadius = "8px";
+  div.style.boxShadow = "0 1px 6px rgba(0,0,0,0.25)";
+  div.style.lineHeight = "1.7";
+  div.style.fontSize = "12px";
+
+  div.innerHTML = `
+    <strong style="font-size:13px;">
+      Légende SST (°C)
+    </strong>
+    <hr style="margin:5px 0;">
+    ${categories.map(c => `
+      <div>
+        <span style="
+          display:inline-block;
+          width:12px;
+          height:12px;
+          border-radius:50%;
+          background:${c.couleur};
+          margin-right:7px;
+          border:1px solid #777;
+        "></span>
+        ${c.texte}
+      </div>
+    `).join("")}
+  `;
+
+  return div;
+};
+
+legendeSST.addTo(map);
     
     // Emplacements indicatifs
     const locations = [
