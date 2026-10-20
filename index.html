@@ -695,57 +695,116 @@
     // Données satellitaires SST - Copernicus Marine
 const coucheSST = L.layerGroup();
 
-fetch("./Marisatel_SST_23-06-2026_pixels.csv")
+fetch("./Marisatel_SST_Juin2026.csv")
   .then(response => {
     if (!response.ok) {
-      throw new Error("Impossible de charger les données SST.");
+      throw new Error("Impossible de charger les données SST de juin 2026.");
     }
     return response.text();
   })
   .then(csv => {
     const lignes = csv.trim().split(/\r?\n/);
-    const entetes = lignes[0].split(",");
+
+    if (lignes.length < 2) {
+      throw new Error("Le fichier SST ne contient aucune donnée.");
+    }
+
+    const entetes = lignes[0]
+      .replace(/^\uFEFF/, "")
+      .split(",")
+      .map(nom => nom.trim());
 
     const indexLat = entetes.indexOf("latitude");
     const indexLon = entetes.indexOf("longitude");
     const indexSST = entetes.indexOf("sst_celsius");
-    const indexQualite = entetes.indexOf("quality_level");
     const indexDate = entetes.indexOf("date_utc");
 
+    if ([indexLat, indexLon, indexSST, indexDate].includes(-1)) {
+      throw new Error(
+        "Colonnes attendues introuvables. Vérifier les en-têtes du CSV."
+      );
+    }
+
+    const pointsParPosition = new Map();
+
     lignes.slice(1).forEach(ligne => {
+      if (!ligne.trim()) return;
+
       const valeurs = ligne.split(",");
 
       const latitude = Number(valeurs[indexLat]);
       const longitude = Number(valeurs[indexLon]);
       const temperature = Number(valeurs[indexSST]);
-      const qualite = valeurs[indexQualite];
-      const date = valeurs[indexDate];
+      const date = valeurs[indexDate]?.trim();
 
       if (
-        Number.isFinite(latitude) &&
-        Number.isFinite(longitude) &&
-        Number.isFinite(temperature) &&
-        qualite === "5"
+        !Number.isFinite(latitude) ||
+        !Number.isFinite(longitude) ||
+        !Number.isFinite(temperature) ||
+        !date
       ) {
-        const marqueur = L.circleMarker([latitude, longitude], {
-          radius: 6,
+        return;
+      }
+
+      const cle = `${latitude.toFixed(4)},${longitude.toFixed(4)}`;
+
+      if (!pointsParPosition.has(cle)) {
+        pointsParPosition.set(cle, []);
+      }
+
+      pointsParPosition.get(cle).push({
+        latitude,
+        longitude,
+        temperature,
+        date
+      });
+    });
+
+    pointsParPosition.forEach(mesures => {
+      mesures.sort((a, b) => a.date.localeCompare(b.date));
+
+      const derniere = mesures[mesures.length - 1];
+
+      const marqueur = L.circleMarker(
+        [derniere.latitude, derniere.longitude],
+        {
+          radius: 5,
           color: "#ff8755",
           fillColor: "#ff8755",
-          fillOpacity: 0.85,
+          fillOpacity: 0.8,
           weight: 1
-        });
+        }
+      );
 
-        marqueur.bindPopup(`
-          <strong>Température de surface de la mer</strong><br>
-          SST : ${temperature.toFixed(2)} °C<br>
-          Date : ${date}<br>
-          Qualité : ${qualite}<br>
-          Source : Copernicus Marine
-        `);
+      const historique = mesures
+        .map(m => `${m.date} : ${m.temperature.toFixed(2)} °C`)
+        .join("<br>");
 
-        coucheSST.addLayer(marqueur);
-      }
-     });
+      marqueur.bindPopup(`
+        <strong>Température de surface de la mer (SST)</strong><br>
+        Position : ${derniere.latitude.toFixed(4)},
+        ${derniere.longitude.toFixed(4)}<br>
+        Dernière date disponible : ${derniere.date}<br>
+        SST : ${derniere.temperature.toFixed(2)} °C<br>
+        Nombre de mesures à cette position : ${mesures.length}<br>
+        <hr>
+        <strong>Historique des mesures</strong><br>
+        ${historique}<br>
+        <hr>
+        Source : Copernicus Marine<br>
+        Période demandée : juin 2026
+      `);
+
+      coucheSST.addLayer(marqueur);
+    });
+
+    console.info(
+      "Données SST chargées :",
+      lignes.length - 1,
+      "lignes ;",
+      pointsParPosition.size,
+      "positions."
+    );
   })
   .catch(erreur => {
     console.error("Erreur de chargement SST :", erreur);
