@@ -862,7 +862,7 @@ function couleurSST(temperature) {
 
   coucheSST.addTo(map);
     // Légende des températures de surface de la mer (SST)
-const legendeSST = L.control({ position: "bottomleft" });
+const legendeSST = L.control({ position: "topleft" });
 
 legendeSST.onAdd = function () {
   const div = L.DomUtil.create("div", "legende-sst");
