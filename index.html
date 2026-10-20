@@ -692,6 +692,67 @@
       }
     ).addTo(map);
 
+    // Données satellitaires SST - Copernicus Marine
+const coucheSST = L.layerGroup();
+
+fetch("./Marisatel_SST_23-06-2026_pixels.csv")
+  .then(response => {
+    if (!response.ok) {
+      throw new Error("Impossible de charger les données SST.");
+    }
+    return response.text();
+  })
+  .then(csv => {
+    const lignes = csv.trim().split(/\r?\n/);
+    const entetes = lignes[0].split(",");
+
+    const indexLat = entetes.indexOf("latitude");
+    const indexLon = entetes.indexOf("longitude");
+    const indexSST = entetes.indexOf("sst_celsius");
+    const indexQualite = entetes.indexOf("quality_level");
+    const indexDate = entetes.indexOf("date_utc");
+
+    lignes.slice(1).forEach(ligne => {
+      const valeurs = ligne.split(",");
+
+      const latitude = Number(valeurs[indexLat]);
+      const longitude = Number(valeurs[indexLon]);
+      const temperature = Number(valeurs[indexSST]);
+      const qualite = valeurs[indexQualite];
+      const date = valeurs[indexDate];
+
+      if (
+        Number.isFinite(latitude) &&
+        Number.isFinite(longitude) &&
+        Number.isFinite(temperature) &&
+        qualite === "5"
+      ) {
+        const marqueur = L.circleMarker([latitude, longitude], {
+          radius: 6,
+          color: "#ff8755",
+          fillColor: "#ff8755",
+          fillOpacity: 0.85,
+          weight: 1
+        });
+
+        marqueur.bindPopup(`
+          <strong>Température de surface de la mer</strong><br>
+          SST : ${temperature.toFixed(2)} °C<br>
+          Date : ${date}<br>
+          Qualité : ${qualite}<br>
+          Source : Copernicus Marine
+        `);
+
+        coucheSST.addLayer(marqueur);
+      }
+     });
+  })
+  .catch(erreur => {
+    console.error("Erreur de chargement SST :", erreur);
+  });
+
+  coucheSST.addTo(map);
+    
     // Emplacements indicatifs
     const locations = [
       {
