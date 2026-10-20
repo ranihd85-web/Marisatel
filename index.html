@@ -761,42 +761,85 @@ fetch("./Marisatel_SST_Juin2026.csv")
     });
 
     pointsParPosition.forEach(mesures => {
-      mesures.sort((a, b) => a.date.localeCompare(b.date));
+  // ترتيب القياسات من الأحدث إلى الأقدم
+  mesures.sort((a, b) => b.date.localeCompare(a.date));
 
-      const derniere = mesures[mesures.length - 1];
+  const derniere = mesures[0];
 
-      const marqueur = L.circleMarker(
-        [derniere.latitude, derniere.longitude],
-        {
-          radius: 5,
-          color: "#ff8755",
-          fillColor: "#ff8755",
-          fillOpacity: 0.8,
-          weight: 1
-        }
-      );
+  // حساب عدد الأيام المختلفة التي تتوفر فيها قياسات
+  const joursDistincts = new Set(
+    mesures.map(m => m.date)
+  ).size;
 
-      const historique = mesures
-        .map(m => `${m.date} : ${m.temperature.toFixed(2)} °C`)
-        .join("<br>");
+  const marqueur = L.circleMarker(
+    [derniere.latitude, derniere.longitude],
+    {
+      radius: 5,
+      color: "#ff8755",
+      fillColor: "#ff8755",
+      fillOpacity: 0.8,
+      weight: 1
+    }
+  );
 
-      marqueur.bindPopup(`
-        <strong>Température de surface de la mer (SST)</strong><br>
-        Position : ${derniere.latitude.toFixed(4)},
-        ${derniere.longitude.toFixed(4)}<br>
-        Dernière date disponible : ${derniere.date}<br>
-        SST : ${derniere.temperature.toFixed(2)} °C<br>
-        Nombre de mesures à cette position : ${mesures.length}<br>
-        <hr>
-        <strong>Historique des mesures</strong><br>
-        ${historique}<br>
-        <hr>
-        Source : Copernicus Marine<br>
-        Période demandée : juin 2026
-      `);
+  // إنشاء سجل القياسات من الأحدث إلى الأقدم
+  const historique = mesures
+    .map(m => `${m.date} : ${m.temperature.toFixed(2)} °C`)
+    .join("<br>");
 
-      coucheSST.addLayer(marqueur);
-    });
+  marqueur.bindPopup(`
+    <div style="min-width:220px; max-width:320px; line-height:1.6;">
+
+      <strong style="font-size:15px; color:#123b50;">
+        Température de surface de la mer (SST)
+      </strong>
+
+      <hr>
+
+      <strong>Dernière mesure disponible :</strong><br>
+      <span style="font-size:22px; font-weight:bold; color:#e87543;">
+        ${derniere.temperature.toFixed(2)} °C
+      </span><br>
+
+      <strong>Date :</strong> ${derniere.date}<br>
+
+      <strong>Latitude :</strong>
+      ${derniere.latitude.toFixed(4)}<br>
+
+      <strong>Longitude :</strong>
+      ${derniere.longitude.toFixed(4)}<br>
+
+      <strong>Nombre total de mesures :</strong>
+      ${mesures.length}<br>
+
+      <strong>Nombre de jours avec mesures :</strong>
+      ${joursDistincts}<br>
+
+      <hr>
+
+      <details>
+        <summary style="cursor:pointer; font-weight:bold; color:#167d8d;">
+          Consulter l'historique complet
+        </summary>
+        <div style="margin-top:8px; max-height:180px; overflow-y:auto;">
+          ${historique}
+        </div>
+      </details>
+
+      <hr>
+
+      <small>
+        <strong>Source :</strong> Copernicus Marine<br>
+        <strong>Période :</strong> Juin 2026<br>
+        Les mesures correspondent aux données disponibles
+        pour cette position.
+      </small>
+
+    </div>
+  `);
+
+  coucheSST.addLayer(marqueur);
+});
 
     console.info(
       "Données SST chargées :",
