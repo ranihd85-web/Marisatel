@@ -771,12 +771,19 @@ fetch("./Marisatel_SST_Juin2026.csv")
     mesures.map(m => m.date)
   ).size;
 
-  const marqueur = L.circleMarker(
+function couleurSST(temperature) {
+  if (temperature < 18) return "#2878b5";
+  if (temperature < 21) return "#35a853";
+  if (temperature < 24) return "#f4d03f";
+  if (temperature < 27) return "#ff8755";
+  return "#d93025";
+}
+      const marqueur = L.circleMarker(
     [derniere.latitude, derniere.longitude],
     {
       radius: 5,
-      color: "#ff8755",
-      fillColor: "#ff8755",
+      color: couleurSST(derniere.temperature),
+      fillColor: couleurSST(derniere.temperature),
       fillOpacity: 0.8,
       weight: 1
     }
