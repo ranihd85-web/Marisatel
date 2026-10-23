@@ -1,0 +1,8 @@
+indicator,file,unit,period,source,method_caveat
+SST,Temperature_surface_Juin2026.csv,°C,Juin 2026; dates retained row-by-row,Copernicus Marine SST source; inspect source metadata before publication,Satellite-derived observations; existing point CSV
+CHL,Chlorophylle_a_carte_Juin2026.csv,mg/m³,"Monthly valid-observation mean, 2026-06-01 to 2026-06-30",Copernicus Marine OCEANCOLOUR_MED_BGC_HR_L3_NRT_009_205; Sentinel-2 MSI-derived,"Satellite-derived ocean-colour product; monthly spatial mean, aggregated for display"
+TUR,Turbidite_carte_Juin2026.csv,FNU,"Monthly valid-observation mean, 2026-06-01 to 2026-06-30",Copernicus Marine OCEANCOLOUR_MED_BGC_HR_L3_NRT_009_205; Sentinel-2 MSI-derived,"Satellite-derived ocean-colour product; monthly spatial mean, aggregated for display"
+VHM0,Hauteur_vague_moyenne_Juin2026.csv,m,Hourly values averaged over June 2026,Copernicus Marine MEDSEA_ANALYSISFORECAST_WAV_006_017; MEDWAM4,"Numerical model/reanalysis, not direct satellite measurement; valid cells only"
+O2,Oxygene_dissous_moyen_Juin2026.csv,mg/L,Daily values averaged over June 2026 at model depth ~1.018 m,Copernicus Marine MEDSEA_MULTIYEAR_BGC_006_008,Biogeochemical reanalysis model; not direct satellite measurement; converted from mmol/m³ using 0.032
+SSS,Salinite_23-06-2026.csv,dataset unit 0.001 (practical salinity),2026-06-23 snapshot,Copernicus Marine MEDSEA_MULTIYEAR_PHY_006_004,Ocean reanalysis/model; not in-situ field data
+Current,Vitesse_courant_23-06-2026.csv,m/s,2026-06-23 snapshot; speed calculated from uo and vo,Copernicus Marine MEDSEA_MULTIYEAR_PHY_006_004,Ocean reanalysis/model; not direct satellite measurement
