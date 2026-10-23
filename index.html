@@ -298,6 +298,7 @@
       line-height: 1.7;
     }
 
+    section[id], .panel[id], h1[id], .section-heading[id] { scroll-margin-top: 20px; }
     #map {
       height: 365px;
       width: 100%;
@@ -535,12 +536,7 @@
   <aside class="sidebar">
     <div class="brand">
      <div class="brand-icon">
- <img
-   src="./Marisatel_logo_transparent_fixed.png"
-   data-logo-candidates="./2e2b7cff-310a-48cc-823f-e29d1d5e68f9.png|./Marisatel_logo_transparent.png|./Marisatel_logo_transparent_fixed.png"
-   alt="Logo MARISATEL"
-   style="width:43px;height:43px;object-fit:contain;display:block;"
-   onerror="(function(img){var candidates=(img.dataset.logoCandidates||'').split('|');var next=Number(img.dataset.logoTry||0);if(next<candidates.length){img.dataset.logoTry=next+1;img.src=candidates[next];}else{img.style.display='none';img.parentElement.textContent='M';img.parentElement.style.color='#071c2c';img.parentElement.style.fontWeight='800';img.parentElement.style.fontSize='25px';}})(this)">
+ <img src="./2e2b7cff-310a-48cc-823f-e29d1d5e68f9.png" alt="Logo Marisatel" style="width:43px;height:43px;object-fit:contain;display:block;">
 </div>
       <div>
         <div class="brand-name">MARISATEL</div>
@@ -569,7 +565,7 @@
         <div class="eyebrow">Plateforme d'aide à la décision</div>
         <h1 id="accueil">Tableau de bord marin</h1>
       </div>
-      <div class="demo-badge">● Prototype — données de démonstration</div>
+      <div class="demo-badge">● Prototype — intégration des données en cours</div>
     </header>
 
     <div class="content">
@@ -644,26 +640,26 @@
       <section class="metrics">
         <div class="metric">
           <div class="metric-label">Température de surface (SST)</div>
-          <div class="metric-value">22,4 <small>°C</small></div>
-          <div class="metric-foot">Exemple pédagogique · non mesuré</div>
+          <div class="metric-value">— <small>°C</small></div>
+          <div class="metric-foot">Donnée réelle à connecter</div>
         </div>
 
         <div class="metric">
           <div class="metric-label">Salinité de surface</div>
-          <div class="metric-value">37,1 <small>PSU</small></div>
-          <div class="metric-foot">Exemple pédagogique · non mesuré</div>
+          <div class="metric-value">— <small>PSU</small></div>
+          <div class="metric-foot">Source et période à afficher</div>
         </div>
 
         <div class="metric">
           <div class="metric-label">Chlorophylle-a</div>
-          <div class="metric-value">0,8 <small>mg/m³</small></div>
-          <div class="metric-foot">Exemple pédagogique · non mesuré</div>
+          <div class="metric-value">— <small>mg/m³</small></div>
+          <div class="metric-foot">Produit satellitaire à connecter</div>
         </div>
 
         <div class="metric">
           <div class="metric-label">Profondeur indicative</div>
-          <div class="metric-value">35 <small>m</small></div>
-          <div class="metric-foot">Exemple pédagogique · non mesuré</div>
+          <div class="metric-value">— <small>m</small></div>
+          <div class="metric-foot">Donnée bathymétrique à connecter</div>
         </div>
       </section>
 
@@ -720,75 +716,7 @@
         </div>
       </section>
 
-      
-      <section class="criteria-section" id="criteres">
-        <div class="section-heading">
-          <h2>Grille de critères d’aptitude aquacole</h2>
-          <span>Référence : Dosdat et al. (1996), selon le tableau fourni</span>
-        </div>
-        <p class="criteria-intro">
-          Cette grille permet de consigner une appréciation préliminaire des facteurs environnementaux
-          d’un site. Sélectionnez une catégorie uniquement lorsque vous disposez d’une donnée documentée.
-          Les choix ci-dessous sont des annotations de travail et ne constituent pas une conclusion automatique.
-        </p>
-        <div class="criteria-toolbar">
-          <label for="criteria-zone">Zone étudiée</label>
-          <select id="criteria-zone">
-            <option>Béni Haoua — Chlef</option>
-            <option>Ténès — Chlef</option>
-            <option>Tipaza</option>
-            <option>Mostaganem</option>
-            <option>Autre zone</option>
-          </select>
-          <label for="criteria-species">Espèce cible</label>
-          <select id="criteria-species">
-            <option>Dorade (Sparus aurata)</option>
-            <option>Loup de mer / bar (Dicentrarchus labrax)</option>
-          </select>
-        </div>
-        <div class="criteria-table-wrap">
-          <table class="criteria-table">
-            <thead>
-              <tr><th>Facteur</th><th>Repère « Bon » du tableau</th><th>Repère « Moyen » du tableau</th><th>Repère « Mauvais » du tableau</th><th>Appréciation du site</th></tr>
-            </thead>
-            <tbody id="criteria-rows">
-              <tr><td>Exposition</td><td>Partielle</td><td>Protégée</td><td>Forte</td></tr>
-              <tr><td>Hauteur des vagues</td><td>1–3 m</td><td>1 m</td><td>&gt; 3 m</td></tr>
-              <tr><td>Profondeur</td><td>&gt; 30 m</td><td>15–30 m</td><td>&lt; 15 m</td></tr>
-              <tr><td>Hydrodynamisme / chasse</td><td>Fort</td><td>Moyen</td><td>Faible</td></tr>
-              <tr><td>Pollution de l’eau</td><td>Faible</td><td>Moyenne</td><td>Forte</td></tr>
-              <tr><td>Température maximale</td><td>22–24 °C</td><td>24–27 °C</td><td>&gt; 27 °C</td></tr>
-              <tr><td>Température minimale</td><td>12 °C</td><td>10 °C</td><td>&lt; 8 °C</td></tr>
-              <tr><td>Salinité moyenne</td><td>25–35 ‰</td><td>15–25 ‰</td><td>&lt; 15 ‰</td></tr>
-              <tr><td>Variations de salinité</td><td>&lt; 5</td><td>5–10</td><td>&gt; 10</td></tr>
-              <tr><td>Oxygène dissous</td><td>100 %</td><td>70–100 %</td><td>&lt; 70 %</td></tr>
-              <tr><td>Pente</td><td>&gt; 30</td><td>10–30</td><td>&lt; 10</td></tr>
-              <tr><td>Substrat</td><td>Sable ou gravier</td><td>Pierres mélangées</td><td>Vase</td></tr>
-              <tr><td>Statut trophique</td><td>Oligotrophe</td><td>Mésotrophe</td><td>Eutrophe</td></tr>
-              <tr><td>Biosalissures</td><td>Peu</td><td>Modérées</td><td>Importantes</td></tr>
-              <tr><td>Prédateurs</td><td>Absents</td><td>Quelques-uns</td><td>Abondants</td></tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="criteria-summary" aria-live="polite">
-          <div class="criteria-count"><strong id="count-good" class="rating-good">0</strong><span>Facteurs annotés « Bon »</span></div>
-          <div class="criteria-count"><strong id="count-medium" class="rating-medium">0</strong><span>Facteurs annotés « Moyen »</span></div>
-          <div class="criteria-count"><strong id="count-bad" class="rating-bad">0</strong><span>Facteurs annotés « Mauvais »</span></div>
-        </div>
-        <div class="criteria-alert">
-          <strong>Précaution scientifique :</strong> les limites et unités sont reproduites d’après l’image fournie.
-          Certaines catégories se chevauchent ou ne précisent pas l’unité (notamment la pente et les variations
-          de salinité). Les seuils doivent être vérifiés dans la publication originale et adaptés à l’espèce,
-          au système d’élevage et au contexte local avant toute note globale. « Non évalué » n’est pas un résultat défavorable.
-        </div>
-        <p class="criteria-foot">
-          Les appréciations choisies sont des annotations manuelles dans le navigateur et ne sont pas enregistrées
-          dans une base de données. Pour chaque décision, consigner la valeur, l’unité, la date, la source et la
-          résolution spatiale. Les données manquantes doivent rester signalées comme telles.
-        </p>
-      </section>
-
-<div class="section-heading" id="donnees">
+      <div class="section-heading" id="donnees">
         <h2>Paramètres intégrés au projet</h2>
         <span>Sources à connecter et à valider</span>
       </div>
@@ -843,6 +771,12 @@
         </div>
       </section>
 
+      <div class="notice" id="rapport-methodologie">
+        <strong>Évaluation scientifique :</strong>
+        les critères de sélection des sites sont destinés au rapport méthodologique.
+        La plateforme affichera une conclusion pour un site uniquement après connexion et vérification
+        des données environnementales, de leurs sources, de leurs dates et des seuils adaptés à l’espèce.
+      </div>
       <div class="notice">
         <strong>Important — statut scientifique :</strong>
         cette version est un prototype d'interface. Les indicateurs numériques affichés sont fictifs
@@ -853,7 +787,7 @@
 
       <footer>
         <strong>MARISATEL</strong> · Plateforme d'aide à la décision pour l'aquaculture marine durable<br>
-        Prototype académique · Littoral algérien · Version initiale
+        Prototype académique · Littoral algérien · Données à valider
       </footer>
     </div>
   </main>
@@ -863,7 +797,41 @@
 
 <script>
   function goTo(id) {
-    document.getElementById(id).scrollIntoView({ behavior: "smooth" });
+    const target = document.getElementById(id);
+    if (!target) return;
+    target.scrollIntoView({ behavior: "smooth", block: "start" });
+    document.querySelectorAll(".nav-link").forEach(link => {
+      link.classList.toggle("active", link.getAttribute("href") === "#" + id);
+    });
+  }
+
+  // Navigation stable : chaque entrée du menu mène à une section réellement présente.
+  document.querySelectorAll(".nav-link").forEach(link => {
+    link.addEventListener("click", function(event) {
+      const href = this.getAttribute("href") || "";
+      if (href.startsWith("#")) {
+        const target = document.getElementById(href.slice(1));
+        if (target) {
+          event.preventDefault();
+          goTo(href.slice(1));
+        }
+      }
+    });
+  });
+
+  // Keep the active menu item in sync with the section currently being viewed.
+  const navTargets = [...document.querySelectorAll(".nav-link")]
+    .map(link => ({ link, target: document.getElementById((link.getAttribute("href") || "").slice(1)) }))
+    .filter(item => item.target);
+  if ("IntersectionObserver" in window) {
+    const navObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          navTargets.forEach(item => item.link.classList.toggle("active", item.target === entry.target));
+        }
+      });
+    }, { rootMargin: "-20% 0px -65% 0px" });
+    navTargets.forEach(item => navObserver.observe(item.target));
   }
 
   const mapElement = document.getElementById("map");
@@ -894,15 +862,23 @@
       }
     );
 
-    // Choix du fond de carte
+    // Afficher l’imagerie NASA par défaut ; garder la carte classique comme alternative.
+    nasaSatellite.addTo(map);
+    nasaSatellite.on("tileerror", () => {
+      const coord = document.getElementById("coordinates");
+      if (coord && !coord.dataset.tileWarning) {
+        coord.dataset.tileWarning = "1";
+        coord.innerHTML = "L’imagerie NASA ne répond pas pour cette date ou ce service. Utilisez le sélecteur de couches pour revenir à la carte classique. Les couches scientifiques doivent être chargées à partir de produits valides.";
+      }
+    });
     L.control.layers(
       {
-        "Carte classique": carteClassique,
-        "Image satellite NASA": nasaSatellite
+        "Image satellite NASA": nasaSatellite,
+        "Carte classique": carteClassique
       }
     ).addTo(map);
 
-    // Données satellitaires SST - Copernicus Marine
+    // Points SST issus du CSV (ceci n’est pas une carte raster continue)
 const coucheSST = L.layerGroup();
 
 fetch("./Marisatel_SST_Juin2026.csv")
@@ -924,10 +900,10 @@ fetch("./Marisatel_SST_Juin2026.csv")
       .split(",")
       .map(nom => nom.trim());
 
-    const indexLat = entetes.indexOf("latitude");
-    const indexLon = entetes.indexOf("longitude");
-    const indexSST = entetes.indexOf("sst_celsius");
-    const indexDate = entetes.indexOf("date_utc");
+    const indexLat = entetes.findIndex(n => ["latitude", "lat"].includes(n.toLowerCase()));
+    const indexLon = entetes.findIndex(n => ["longitude", "lon", "long"].includes(n.toLowerCase()));
+    const indexSST = entetes.findIndex(n => ["sst_celsius", "sst", "temperature", "temperature_c", "value"].includes(n.toLowerCase()));
+    const indexDate = entetes.findIndex(n => ["date_utc", "date", "date_period", "time"].includes(n.toLowerCase()));
 
     if ([indexLat, indexLon, indexSST, indexDate].includes(-1)) {
       throw new Error(
@@ -1214,7 +1190,5 @@ legendeSST.addTo(map);
 })();
 </script>
 
-
-<!-- MARISATEL logo fallback handler: tests the logo filenames used in the repository. -->
 </body>
 </html>
