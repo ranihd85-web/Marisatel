@@ -1,67 +1,1220 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="MARISATEL : plateforme d'aide à la décision pour l'aquaculture marine en Algérie, fondée sur des données géospatiales et océanographiques sourcées.">
-<title>MARISATEL | Intelligence marine</title>
-<link rel="preconnect" href="https://unpkg.com"><link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-<style>
-:root{--navy:#071c2c;--navy2:#0b2537;--panel:#102d40;--teal:#20d2bd;--cyan:#80e6ef;--text:#f2f7fa;--muted:#a7bdca;--border:rgba(170,210,225,.16);--green:#55d6a2;--amber:#ffc76b;--red:#ff7777}*{box-sizing:border-box}body{margin:0;background:linear-gradient(145deg,#061724,#0a2233 60%,#071c2c);color:var(--text);font-family:Inter,Arial,sans-serif}button,select{font:inherit}button,a,select{cursor:pointer}.layout{display:grid;grid-template-columns:250px minmax(0,1fr);min-height:100vh}.sidebar{padding:24px 17px;background:#051521;border-right:1px solid var(--border);position:sticky;top:0;height:100vh;overflow:auto}.brand{display:flex;align-items:center;gap:11px;margin:0 0 30px}.logo{width:45px;height:45px;border-radius:13px;background:linear-gradient(135deg,var(--teal),var(--cyan));color:#06222b;display:grid;place-items:center;font-size:24px;font-weight:900}.logo-image{width:52px;height:52px;object-fit:contain;flex-shrink:0;border-radius:50%;background:#fff;padding:3px;box-shadow:0 0 0 2px rgba(32,210,189,.22)}.brand strong{letter-spacing:2px;font-size:19px}.brand small{display:block;color:var(--muted);font-size:10px;letter-spacing:1.5px;margin-top:4px}.nav-title{color:#7696a8;font-size:10px;letter-spacing:1.8px;text-transform:uppercase;margin:24px 10px 10px}.nav-link{display:block;padding:12px;border-radius:9px;color:#bed0da;text-decoration:none;font-size:13px;margin:4px 0}.nav-link:hover,.nav-link.active{background:rgba(32,210,189,.12);color:var(--teal)}.side-note{margin-top:32px;padding:14px;border:1px solid var(--border);border-radius:12px;color:var(--muted);font-size:11px;line-height:1.8}.side-note b{color:var(--teal)}main{min-width:0}.topbar{padding:22px 30px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;gap:15px}.eyebrow{color:var(--teal);font-size:10px;letter-spacing:2px;text-transform:uppercase;font-weight:bold}h1{font-size:25px;margin:7px 0 0}.badge{border:1px solid rgba(255,199,107,.45);color:var(--amber);background:rgba(255,199,107,.08);padding:9px 12px;border-radius:22px;font-size:11px}.content{padding:25px 30px 40px}.hero{padding:28px;border:1px solid rgba(32,210,189,.25);border-radius:17px;background:radial-gradient(ellipse at 90% 15%,rgba(32,210,189,.16),transparent 42%),linear-gradient(120deg,#102e42,#0a2233)}.hero h2{font-size:clamp(24px,3vw,36px);max-width:760px;line-height:1.2;margin:10px 0}.hero h2 span{color:var(--teal)}.hero p{max-width:800px;color:#c2d4de;font-size:13px;line-height:1.9}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}.btn{border:1px solid var(--border);background:transparent;color:var(--text);padding:11px 15px;border-radius:8px;font-size:12px;font-weight:bold;text-decoration:none;display:inline-block}.btn.primary{background:var(--teal);color:#05252e;border-color:var(--teal)}.section-head{display:flex;justify-content:space-between;align-items:end;gap:12px;margin:27px 0 13px}.section-head h2{font-size:18px;margin:0}.section-head small{color:var(--muted);font-size:11px}.metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.metric{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:16px;min-width:0;cursor:pointer;transition:.2s}.metric:hover,.metric.selected{border-color:var(--teal);transform:translateY(-2px);box-shadow:0 8px 25px #0002}.metric .icon{font-size:21px}.metric h3{font-size:12px;color:#bfd0da;font-weight:600;min-height:30px;margin:10px 0 7px}.metric .value{font-size:22px;font-weight:800;overflow-wrap:anywhere}.metric .unit{font-size:11px;color:var(--muted);font-weight:normal}.metric .foot{font-size:10px;color:var(--amber);line-height:1.5;margin-top:8px}.grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(270px,.8fr);gap:15px;margin-top:18px}.panel{background:var(--panel);border:1px solid var(--border);border-radius:13px;padding:18px;min-width:0}.panel h2,.panel h3{font-size:15px;margin:0 0 8px}.desc{color:var(--muted);font-size:11px;line-height:1.8;margin:0 0 14px}#map{height:440px;border-radius:9px;overflow:hidden;background:#dce8ec;z-index:1}.map-toolbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:12px}.map-toolbar label{font-size:11px;color:var(--muted)}select{background:#071d2b;color:var(--text);border:1px solid #345165;border-radius:7px;padding:10px;max-width:100%}.map-toolbar select{flex:1;min-width:180px}.legend{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px;font-size:10px;color:var(--muted)}.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px}.detail-box{margin-top:14px;background:#081f2e;border:1px solid var(--border);border-radius:10px;padding:14px;line-height:1.8;font-size:12px}.detail-box strong{color:var(--cyan)}.detail-box a,.source-link{color:var(--teal);text-decoration:none}.detail-box a:hover,.source-link:hover{text-decoration:underline}.status{display:inline-block;border-radius:20px;padding:5px 9px;font-size:10px;font-weight:bold;margin:3px 0 8px}.status.ok{background:#164b3d;color:#8ff0c3}.status.warn{background:#55401b;color:#ffdb8e}.status.bad{background:#5b282d;color:#ffb0b0}.report{margin-top:18px}.report-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:12px 0}.report-card{border:1px solid var(--border);border-radius:10px;padding:13px;background:#0a2232}.report-card h4{font-size:12px;margin:8px 0}.report-card p{font-size:10px;line-height:1.7;color:var(--muted);margin:0}.report-note{font-size:12px;line-height:1.9;color:#c4d5de}.sources{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.source-card{padding:14px;border:1px solid var(--border);border-radius:10px;background:#0a2232}.source-card h3{font-size:12px;margin:0 0 7px}.source-card p{font-size:10px;color:var(--muted);line-height:1.7;margin:0 0 8px}.source-card a{font-size:11px;color:var(--teal);text-decoration:none}.notice{margin-top:17px;padding:14px 16px;border-left:3px solid var(--amber);background:#2d291d;border-radius:7px;color:#e1d7c0;font-size:11px;line-height:1.8}footer{border-top:1px solid var(--border);margin-top:28px;padding-top:18px;text-align:center;color:var(--muted);font-size:10px;line-height:1.8}.hidden{display:none!important}@media(max-width:1100px){.metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.grid{grid-template-columns:1fr}}@media(max-width:700px){.layout{grid-template-columns:1fr}.sidebar{position:relative;height:auto;padding:14px}.brand{margin-bottom:12px}.nav-title,.side-note{display:none}.sidebar nav{display:flex;flex-wrap:wrap}.nav-link{padding:8px;font-size:11px}.topbar{padding:17px;align-items:flex-start;flex-direction:column}.content{padding:15px}.hero{padding:20px}#map{height:350px}.sources{grid-template-columns:1fr}.report-grid{grid-template-columns:1fr}}
-@media print{body{background:#fff;color:#111}.sidebar,.topbar .badge,.actions button,.map-toolbar{display:none!important}.panel,.hero,.report-card,.source-card{background:#fff!important;color:#111!important;border:1px solid #bbb;break-inside:avoid}.desc,.report-note,.source-card p,footer{color:#333!important}a{color:#0645ad!important}.content{padding:0}.layout{display:block}#map{height:300px}}\n</style></head>
-<body><div class="layout"><aside class="sidebar"><div class="brand"><img class="logo-image" src="./Marisatel_logo_transparent_fixed.png" alt="Logo MARISATEL" onerror="this.onerror=null;this.src='./2e2b7cff-310a-48cc-823f-e29d1d5e68f9.png';"><div><strong>MARISATEL</strong><small>INTELLIGENCE MARINE</small></div></div><div class="nav-title">Navigation principale</div><nav><a class="nav-link active" href="#accueil">⌂ Tableau de bord</a><a class="nav-link" href="#indicateurs">◈ Indicateurs</a><a class="nav-link" href="#carte">◎ Carte des mesures</a><a class="nav-link" href="#analyse">⌁ Rapport de site</a><a class="nav-link" href="#sources">↗ Sources scientifiques</a></nav><div class="side-note"><b>Notre mission</b><br>Structurer les données environnementales et océanographiques pour soutenir une première évaluation des sites d'aquaculture marine en Algérie.</div></aside>
-<main><header class="topbar"><div><div class="eyebrow">Observer · Analyser · Documenter</div><h1 id="accueil">Tableau de bord marin</h1></div><div class="badge">Prototype scientifique · données à vérifier</div></header><div class="content">
-<section class="hero"><div class="eyebrow">Aide à la décision aquacole</div><h2>Une lecture intégrée du littoral pour une <span>aquaculture marine durable.</span></h2><p>MARISATEL rassemble des données satellitaires, des produits océanographiques et, lorsqu'elles sont disponibles, des mesures de terrain. Chaque indicateur affiche sa valeur, son unité, sa période, sa provenance et un lien vers le catalogue du fournisseur. Les données issues de modèles ne sont pas présentées comme des mesures directes.</p><div class="actions"><a class="btn primary" href="#carte">Explorer les cartes ↗</a><a class="btn" href="#analyse">Consulter le rapport préliminaire</a></div></section>
-<div class="section-head" id="indicateurs"><h2>Indicateurs environnementaux</h2><small>Cliquez sur une carte pour afficher ses données sur la carte marine.</small></div><section class="metrics" id="metricCards"></section>
-<section class="grid"><div class="panel" id="carte"><h2>Carte marine interactive</h2><p class="desc">Choisissez un indicateur puis cliquez sur un point pour consulter les détails. Les points représentent uniquement les positions présentes dans les fichiers importés.</p><div class="map-toolbar"><label for="locationSearch">Rechercher une région</label><input id="locationSearch" type="search" placeholder="Ex. Béni Haoua, Ténès, Mostaganem…" aria-label="Rechercher une région côtière" style="flex:2;min-width:220px;background:#071d2b;color:#f2f7fa;border:1px solid #345165;border-radius:7px;padding:10px"><button class="btn" id="searchBtn" type="button">Rechercher</button><label for="indicatorSelect">Indicateur</label><select id="indicatorSelect" aria-label="Choisir un indicateur"></select><button class="btn" id="fitBtn" type="button">Cadrer les données</button></div><div id="searchMessage" class="desc" role="status">La recherche localise une région sur la carte; elle ne signifie pas que des données sont disponibles à cet endroit.</div><div id="map" aria-label="Carte interactive des mesures environnementales"></div><div class="legend"><span><i class="dot" style="background:#2f9d78"></i>Valeur disponible</span><span><i class="dot" style="background:#f0b84b"></i>Donnée à interpréter avec prudence</span><span>Fond de carte : OpenStreetMap</span></div><div id="detail" class="detail-box">Sélectionnez un indicateur puis cliquez sur un point de la carte pour afficher les mesures disponibles.</div></div>
-<div class="panel"><h2>État des données</h2><p class="desc">La disponibilité des fichiers ne signifie pas que tous les paramètres ont été validés sur le terrain.</p><div id="dataStatus" class="detail-box"></div><div class="notice"><b>Précaution scientifique :</b> les produits océanographiques peuvent avoir une résolution spatiale trop grossière pour distinguer précisément un emplacement de cage. La période, la profondeur, la qualité du pixel et la distance au site doivent être examinées avant toute conclusion.</div></div></section>
-<section class="panel report" id="analyse"><h2>Rapport préliminaire de ملاءمة الموقع / aptitude du site</h2><p class="desc">Ce rapport est une aide à l'examen des données, et non une autorisation d'implantation ni une validation réglementaire.</p><div class="report-grid"><div class="report-card"><span class="status warn">À confirmer</span><h4>Statut global</h4><p id="overallStatus">Le statut sera déterminé selon la disponibilité et la qualité des données; aucun score définitif n'est calculé automatiquement.</p></div><div class="report-card"><span class="status warn">Couverture partielle</span><h4>Données environnementales</h4><p id="coverageStatus">Chargement des fichiers en cours…</p></div><div class="report-card"><span class="status warn">Validation nécessaire</span><h4>Mesures de terrain</h4><p>Les mesures de terrain doivent être associées à leur date, heure, coordonnées et méthode. Ne pas assimiler les sorties de modèles à des mesures in situ.</p></div></div><p class="report-note" id="reportText">Le rapport sera mis à jour après chargement des fichiers disponibles.</p><div class="actions"><button class="btn primary" id="printBtn" type="button">Imprimer / enregistrer le rapport en PDF</button></div></section>
-<div class="section-head" id="sources"><h2>Sources scientifiques et traçabilité</h2><small>Les liens ouvrent les catalogues officiels des fournisseurs.</small></div><section class="sources" id="sourceCards"></section>
-<div class="notice"><b>Limites importantes :</b> la température et le pH mesurés sur le terrain ne valident pas automatiquement la salinité, la chlorophylle, l'oxygène, les vagues ou les courants. Le pH n'est pas un produit directement mesuré par les images satellitaires usuelles. La bathymétrie nécessite un jeu de données bathymétriques dédié, idéalement contrôlé localement. Avant de conclure, examiner aussi les contraintes réglementaires, écologiques, techniques et logistiques.</div><footer><b>MARISATEL · INTELLIGENCE MARINE</b><br>Prototype académique — littoral algérien — chaque donnée doit être interprétée selon sa source, sa période et sa résolution.</footer></div></main></div>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script><script>
-const REPO='https://github.com/ranihd85-web/Marisatel';
-const indicatorConfig={
- SST:{label:'Température de surface (SST)',icon:'🌡️',file:'Marisatel_SST_Juin2026.csv',unit:'°C',dateLabel:'Date UTC',sourceName:'Copernicus Marine — SST',url:'https://data.marine.copernicus.eu/product/SST_MED_SST_L4_NRT_OBSERVATIONS_010_004/description',kind:'satellite',description:'Température de la surface de la mer. Contrôler la date, la qualité du pixel et la comparaison avec le relevé terrain.'},
- CHL:{label:'Chlorophylle-a',icon:'🌿',file:'Chlorophylle_a_carte_Juin2026.csv',unit:'mg/m³',dateLabel:'Période UTC',sourceName:'Copernicus Marine — Ocean Colour Méditerranée',url:'https://data.marine.copernicus.eu/product/OCEANCOLOUR_MED_BGC_HR_L3_NRT_009_205/description',kind:'satellite',description:'Indicateur optique lié au phytoplancton. Les eaux côtières peuvent être affectées par la turbidité et les pixels invalides.'},
- SSS:{label:'Salinité de surface',icon:'🧂',file:'Salinite_23-06-2026.csv',unit:'PSU',dateLabel:'Date UTC',sourceName:'Copernicus Marine — réanalyse physique',url:'https://data.marine.copernicus.eu/product/MEDSEA_MULTIYEAR_PHY_006_004/description',kind:'model',description:'Valeur issue d’un produit océanographique de réanalyse, pas d’une mesure directe par satellite au point.'},
- TUR:{label:'Turbidité / matière en suspension',icon:'🌫️',file:'Turbidite_carte_Juin2026.csv',unit:'FNU',dateLabel:'Période UTC',sourceName:'Copernicus Marine — Ocean Colour Méditerranée',url:'https://data.marine.copernicus.eu/product/OCEANCOLOUR_MED_BGC_HR_L3_NRT_009_205/description',kind:'satellite',description:'Indicateur optique/proxy. Vérifier la définition de la variable du produit et ne pas confondre FNU avec une mesure de terrain sans méthode équivalente.'},
- O2:{label:'Oxygène dissous',icon:'🫧',file:'Oxygene_dissous_moyen_Juin2026.csv',unit:'mg/L',dateLabel:'Période UTC',sourceName:'Copernicus Marine — réanalyse biogéochimique',url:'https://data.marine.copernicus.eu/product/MEDSEA_MULTIYEAR_BGC_006_008/description',kind:'model',description:'Valeur issue d’un modèle/réanalyse à une profondeur donnée. À confirmer par mesure in situ avant décision opérationnelle.'},
- WAVE:{label:'Hauteur moyenne des vagues',icon:'🌊',file:'Hauteur_vague_moyenne_Juin2026.csv',unit:'m',dateLabel:'Période UTC',sourceName:'Copernicus Marine — analyse/prévision des vagues',url:'https://data.marine.copernicus.eu/',kind:'model',description:'Hauteur moyenne modélisée sur la période indiquée; elle ne remplace pas l’étude de l’exposition aux tempêtes et aux vagues extrêmes.'},
- CURRENT:{label:'Vitesse des courants',icon:'➰',file:'Vitesse_courant_23-06-2026.csv',unit:'m/s',dateLabel:'Date UTC',sourceName:'Copernicus Marine — réanalyse physique',url:'https://data.marine.copernicus.eu/product/MEDSEA_MULTIYEAR_PHY_006_004/description',kind:'model',description:'Vitesse calculée à partir des composantes de courant d’un modèle océanographique; la résolution locale doit être prise en compte.'}
-};
-const sourceItems=[['Température de surface','Copernicus Marine SST. Consulter la fiche produit, la résolution, les dates et les contrôles qualité.','https://data.marine.copernicus.eu/product/SST_MED_SST_L4_NRT_OBSERVATIONS_010_004/description'],['Chlorophylle-a et turbidité','Produit couleur de l’océan en Méditerranée. Vérifier la variable exacte et les limites des pixels côtiers.','https://data.marine.copernicus.eu/product/OCEANCOLOUR_MED_BGC_HR_L3_NRT_009_205/description'],['Salinité et courants','Produit de réanalyse physique méditerranéenne. Ce sont des valeurs de modèle et non des mesures directes au point.','https://data.marine.copernicus.eu/product/MEDSEA_MULTIYEAR_PHY_006_004/description'],['Oxygène dissous','Réanalyse biogéochimique méditerranéenne; vérifier la profondeur et les unités du produit.','https://data.marine.copernicus.eu/product/MEDSEA_MULTIYEAR_BGC_006_008/description'],['Bathymétrie','EMODnet Bathymetry pour les données de profondeur; le fichier local doit être ajouté et contrôlé avant affichage.','https://emodnet.ec.europa.eu/en/bathymetry'],['Dépôt MARISATEL','Fichiers CSV et code du prototype utilisés par cette interface.','https://github.com/ranihd85-web/Marisatel']];
-let datasets={},currentKey='SST',map,markersLayer=L.layerGroup(),lastBounds=null;
-function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
-function parseCSV(text){const lines=text.replace(/^\uFEFF/,'').trim().split(/\r?\n/);if(lines.length<2)return[];const split=line=>{let out=[],cur='',q=false;for(let i=0;i<line.length;i++){let c=line[i];if(c==='"'&&line[i+1]==='"'&&q){cur+='"';i++;}else if(c==='"')q=!q;else if(c===','&&!q){out.push(cur);cur='';}else cur+=c;}out.push(cur);return out;};const h=split(lines[0]).map(x=>x.trim());return lines.slice(1).filter(x=>x.trim()).map(line=>{let vals=split(line),o={};h.forEach((k,i)=>o[k]=(vals[i]??'').trim());return o;});}
-function normalizeRows(key,rows){return rows.map(r=>{let lat=Number(r.latitude??r.lat),lon=Number(r.longitude??r.lon),value=Number(r.value??r.sst_celsius??r.temperature??r.measurement);if(!Number.isFinite(lat)||!Number.isFinite(lon)||!Number.isFinite(value))return null;return{lat,lon,value,unit:r.unit||indicatorConfig[key].unit,date:r.date_utc||r.period_utc||r.period||r.date||'Période non précisée',source:r.source||indicatorConfig[key].sourceName,quality:r.quality_level||r.quality||'',raw:r};}).filter(Boolean);}
-function displayValue(key,v){return Number(v).toLocaleString('fr-FR',{maximumFractionDigits:3});}
-function renderCards(){const root=document.getElementById('metricCards');root.innerHTML=Object.entries(indicatorConfig).map(([key,c])=>{let rows=datasets[key]||[],mean=rows.length?rows.reduce((s,r)=>s+r.value,0)/rows.length:null;return `<article class="metric ${key===currentKey?'selected':''}" data-key="${key}" tabindex="0" role="button"><div class="icon">${c.icon}</div><h3>${c.label}</h3><div class="value">${mean===null?'—':displayValue(key,mean)} <span class="unit">${c.unit}</span></div><div class="foot">${rows.length?`${rows.length} points chargés · moyenne des lignes du fichier`:'Fichier non chargé ou absent'}</div></article>`;}).join('');root.querySelectorAll('.metric').forEach(el=>{el.addEventListener('click',()=>selectIndicator(el.dataset.key));el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();selectIndicator(el.dataset.key);}});});}
-function sourceLink(key){return `<a href="${indicatorConfig[key].url}" target="_blank" rel="noopener">Ouvrir le catalogue officiel ↗</a>`;}
-function selectIndicator(key){currentKey=key;document.getElementById('indicatorSelect').value=key;renderCards();renderMap();}
-function renderMap(){if(!map)return;markersLayer.clearLayers();const c=indicatorConfig[currentKey],rows=datasets[currentKey]||[];lastBounds=null;if(!rows.length){document.getElementById('detail').innerHTML=`<strong>${esc(c.label)}</strong><br>Aucune donnée exploitable chargée pour ce fichier.<br><br><a href="${REPO}/blob/main/${encodeURIComponent(c.file)}" target="_blank" rel="noopener">Vérifier le fichier dans GitHub ↗</a><br>${sourceLink(currentKey)}`;return;}let latlngs=[];rows.forEach(r=>{let color=currentKey==='SST'?(r.value<18?'#2878b5':r.value<21?'#35a853':r.value<24?'#f4d03f':r.value<27?'#ff8755':'#d93025'):'#2f9d78';const marker=L.circleMarker([r.lat,r.lon],{radius:5,color,fillColor:color,fillOpacity:.78,weight:1}).bindPopup(`<div style="min-width:210px;line-height:1.6;color:#172d3a"><b>${esc(c.label)}</b><br><b>Valeur :</b> ${esc(displayValue(currentKey,r.value))} ${esc(r.unit)}<br><b>Période/date :</b> ${esc(r.date)}<br><b>Latitude :</b> ${r.lat.toFixed(5)}<br><b>Longitude :</b> ${r.lon.toFixed(5)}<br><b>Type :</b> ${c.kind==='model'?'Produit de modèle/réanalyse':'Produit d’observation satellitaire'}<br><b>Qualité :</b> ${esc(r.quality||'Non fournie dans le fichier')}<br><a href="${c.url}" target="_blank" rel="noopener">Source officielle ↗</a></div>`);marker.on('click',()=>showDetail(currentKey,r));marker.addTo(markersLayer);latlngs.push([r.lat,r.lon]);});if(latlngs.length){lastBounds=L.latLngBounds(latlngs);if(latlngs.length===1)map.setView(latlngs[0],8);else map.fitBounds(lastBounds.pad(.08),{maxZoom:8});}document.getElementById('detail').innerHTML=`<strong>${esc(c.label)}</strong><br>${esc(c.description)}<br><br><b>Fichier :</b> <a href="${REPO}/blob/main/${encodeURIComponent(c.file)}" target="_blank" rel="noopener">${esc(c.file)} ↗</a><br><b>Nombre de lignes utilisables :</b> ${rows.length}<br><b>Source :</b> ${esc(c.sourceName)}<br>${sourceLink(currentKey)}<br><small>La valeur affichée sur la carte est celle du point cliqué; la moyenne de la carte indicateur résume uniquement les lignes du fichier et ne constitue pas une moyenne validée du site d’élevage.</small>`;}
-function showDetail(key,r){const c=indicatorConfig[key];document.getElementById('detail').innerHTML=`<strong>${esc(c.label)}</strong><br><div style="font-size:24px;font-weight:800;margin:5px 0">${esc(displayValue(key,r.value))} <small>${esc(r.unit)}</small></div><b>Date/période :</b> ${esc(r.date)}<br><b>Latitude :</b> ${r.lat.toFixed(5)}<br><b>Longitude :</b> ${r.lon.toFixed(5)}<br><b>Type de donnée :</b> ${c.kind==='model'?'Modèle/réanalyse océanographique':'Observation satellitaire ou produit dérivé'}<br><b>Source mentionnée dans le fichier :</b> ${esc(r.source)}<br><b>Qualité :</b> ${esc(r.quality||'Non précisée')}<br><p>${esc(c.description)}</p><a href="${c.url}" target="_blank" rel="noopener">Consulter la source officielle ↗</a>`;}
-function renderStatus(){const available=Object.entries(indicatorConfig).filter(([k])=>(datasets[k]||[]).length),missing=Object.entries(indicatorConfig).filter(([k])=>!(datasets[k]||[]).length);document.getElementById('dataStatus').innerHTML=`<b>Indicateurs avec données :</b> ${available.length}/${Object.keys(indicatorConfig).length}<br>${available.map(([k,c])=>`<div>✓ ${esc(c.label)} — ${(datasets[k]||[]).length} points</div>`).join('')}<br><b>Fichiers à vérifier :</b><br>${missing.length?missing.map(([k,c])=>`<div>• ${esc(c.file)} — absent ou format non reconnu</div>`).join(''):'Tous les fichiers configurés ont fourni des lignes numériques.'}`;document.getElementById('coverageStatus').textContent=`${available.length} indicateurs chargés sur ${Object.keys(indicatorConfig).length}; ${missing.length} sans données exploitables.`;document.getElementById('overallStatus').textContent='Aucun classement automatique final : il manque notamment une grille de seuils documentés par espèce et une validation complète des données.';document.getElementById('reportText').textContent=`Résumé automatique : ${available.length} indicateurs disposent de données numériques dans les fichiers du prototype. Les données de chlorophylle et de turbidité couvrent la période du 1er au 30 juin 2026; les courants et la salinité sont des instantanés datés du 23 juin 2026; l’oxygène et les vagues sont des sorties de modèles moyennées sur juin 2026. Ces périodes différentes ne doivent pas être interprétées comme une observation simultanée. Avant tout avis d’aptitude, contrôler les métadonnées officielles, la profondeur, la qualité, la proximité des points avec le site, les mesures de terrain et les critères spécifiques à l’espèce.`;}
-function renderSources(){document.getElementById('sourceCards').innerHTML=sourceItems.map(s=>`<article class="source-card"><h3>${esc(s[0])}</h3><p>${esc(s[1])}</p><a href="${s[2]}" target="_blank" rel="noopener">Consulter la source officielle ↗</a></article>`).join('');}
-async function loadData(){const select=document.getElementById('indicatorSelect');select.innerHTML=Object.entries(indicatorConfig).map(([k,c])=>`<option value="${k}">${esc(c.label)}</option>`).join('');const results=await Promise.all(Object.entries(indicatorConfig).map(async([key,c])=>{try{const response=await fetch('./'+encodeURIComponent(c.file));if(!response.ok)throw new Error('HTTP '+response.status);const rows=normalizeRows(key,parseCSV(await response.text()));datasets[key]=rows;return[key,rows.length,''];}catch(e){datasets[key]=[];return[key,0,e.message];}}));renderCards();renderSources();renderStatus();renderMap();console.info('MARISATEL files:',results);}
-if(typeof L!=='undefined'){map=L.map('map').setView([36.55,1.48],8);L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'&copy; OpenStreetMap contributors',maxZoom:18}).addTo(map);markersLayer.addTo(map);}
-document.getElementById('indicatorSelect').addEventListener('change',e=>selectIndicator(e.target.value));document.getElementById('fitBtn').addEventListener('click',()=>{if(lastBounds)map.fitBounds(lastBounds.pad(.08),{maxZoom:8});else map.setView([36.55,1.48],8);});document.getElementById('printBtn').addEventListener('click',()=>window.print());
-async function searchLocation(){
- const input=document.getElementById('locationSearch'),msg=document.getElementById('searchMessage'),q=input.value.trim();
- if(!q){msg.textContent='Saisissez le nom d’une région côtière ou une commune.';return;}
- msg.textContent='Recherche du lieu en cours…';
- try{
-  const url='https://nominatim.openstreetmap.org/search?format=jsonv2&limit=5&country=Algeria&q='+encodeURIComponent(q);
-  const response=await fetch(url,{headers:{'Accept':'application/json'}});
-  if(!response.ok)throw new Error('Service de recherche momentanément indisponible');
-  const places=await response.json();
-  if(!places.length){msg.textContent='Aucun lieu trouvé. Essayez le nom en français ou ajoutez la wilaya.';return;}
-  const p=places[0],lat=Number(p.lat),lon=Number(p.lon);
-  map.setView([lat,lon],11);
-  L.marker([lat,lon]).addTo(map).bindPopup('<b>Lieu recherché</b><br>'+esc(p.display_name)+'<br><small>Ce marqueur indique la localisation, pas la présence de données environnementales.</small>').openPopup();
-  msg.textContent='Lieu localisé : '+p.display_name+'. Vérifiez ensuite les points disponibles pour l’indicateur choisi.';
- }catch(e){msg.textContent='Recherche indisponible pour le moment. Vous pouvez utiliser les données de la carte ou réessayer plus tard.';console.error(e);}
-}
-document.getElementById('searchBtn').addEventListener('click',searchLocation);
-document.getElementById('locationSearch').addEventListener('keydown',e=>{if(e.key==='Enter')searchLocation();});
-loadData();
-</script></body></html>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Marisatel : plateforme d'aide à la décision pour une aquaculture marine durable en Algérie.">
+  <title>Marisatel | Intelligence marine</title>
 
+  <link rel="preconnect" href="https://unpkg.com">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+
+  <style>
+    :root {
+      --navy: #071c2c;
+      --navy-light: #102d40;
+      --teal: #18c6b4;
+      --cyan: #68dce8;
+      --white: #f4f8fb;
+      --muted: #91a9b9;
+      --panel: #10283a;
+      --border: rgba(164, 207, 222, 0.13);
+      --green: #61d6a2;
+      --orange: #ffc875;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--navy);
+      color: var(--white);
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    button, input, select { font: inherit; }
+
+    button { cursor: pointer; }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 245px minmax(0, 1fr);
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      padding: 27px 18px;
+      background: #061724;
+      border-right: 1px solid var(--border);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      margin: 0 0 35px 5px;
+    }
+
+    .brand-icon {
+      width: 43px;
+      height: 43px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: var(--navy);
+      font-size: 25px;
+      font-weight: bold;
+   background: #ffffff;
+    } 
+.brand-icon {
+    width: 43px;
+    height: 43px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: #ffffff;
+    overflow: hidden;
+}
+    .brand-name {
+      font-size: 21px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+    }
+
+    .brand-sub {
+      color: var(--muted);
+      font-size: 10px;
+      margin-top: 4px;
+    }
+
+    .nav-title {
+      color: #6f91a5;
+      font-size: 10px;
+      letter-spacing: 1.7px;
+      margin: 26px 10px 12px;
+      text-transform: uppercase;
+    }
+
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 13px 12px;
+      margin: 4px 0;
+      border-radius: 9px;
+      color: #adc2cf;
+      font-size: 13px;
+      text-decoration: none;
+      transition: 0.2s;
+    }
+
+    .nav-link:hover, .nav-link.active {
+      background: rgba(24, 198, 180, 0.12);
+      color: var(--teal);
+    }
+
+    .sidebar-note {
+      margin-top: 45px;
+      padding: 16px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    .sidebar-note strong { color: var(--teal); }
+
+    main { min-width: 0; }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 23px 30px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .eyebrow {
+      color: var(--teal);
+      font-size: 10px;
+      font-weight: bold;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      font-size: 25px;
+      margin: 7px 0 0;
+    }
+
+    .demo-badge {
+      border: 1px solid rgba(255, 200, 117, 0.4);
+      background: rgba(255, 200, 117, 0.08);
+      color: var(--orange);
+      border-radius: 20px;
+      padding: 9px 12px;
+      font-size: 11px;
+      white-space: nowrap;
+    }
+
+    .content { padding: 26px 30px 35px; }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 29px;
+      border: 1px solid rgba(24, 198, 180, 0.22);
+      border-radius: 16px;
+      background:
+        radial-gradient(ellipse at 90% 20%, rgba(24, 198, 180, 0.16), transparent 40%),
+        linear-gradient(120deg, #102d40, #0b2233);
+    }
+
+    .hero h2 {
+      max-width: 600px;
+      margin: 0 0 12px;
+      font-size: clamp(23px, 3vw, 34px);
+      line-height: 1.25;
+    }
+
+    .hero p {
+      max-width: 650px;
+      color: #b3c8d4;
+      font-size: 14px;
+      line-height: 1.8;
+    }
+
+    .hero .accent { color: var(--teal); }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    .btn {
+      padding: 12px 16px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--white);
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .btn-primary {
+      background: var(--teal);
+      color: #06222b;
+      border-color: var(--teal);
+    }
+
+    .btn:hover { filter: brightness(1.12); }
+
+    .section-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin: 28px 0 15px;
+    }
+
+    .section-heading h2 {
+      margin: 0;
+      font-size: 17px;
+    }
+
+    .section-heading span {
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 13px;
+    }
+
+    .metric {
+      padding: 17px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--panel);
+      min-width: 0;
+    }
+
+    .metric-label {
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.5;
+      min-height: 31px;
+    }
+
+    .metric-value {
+      font-size: 25px;
+      font-weight: 700;
+      margin: 13px 0 7px;
+      overflow-wrap: anywhere;
+    }
+
+    .metric-value small {
+      color: #a5bdca;
+      font-size: 12px;
+      font-weight: normal;
+    }
+
+    .metric-foot {
+      color: var(--orange);
+      font-size: 10px;
+      line-height: 1.5;
+    }
+
+    .work-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.55fr) minmax(260px, 0.9fr);
+      gap: 16px;
+      margin-top: 22px;
+    }
+
+    .panel {
+      padding: 19px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      min-width: 0;
+    }
+
+    .panel h3 {
+      margin: 0 0 8px;
+      font-size: 15px;
+    }
+
+    .panel-desc {
+      margin: 0 0 16px;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.7;
+    }
+
+    #map {
+      height: 365px;
+      width: 100%;
+      border-radius: 9px;
+      background: #d8e7e8;
+      z-index: 1;
+    }
+
+    .map-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 13px;
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 10px;
+    }
+
+    .dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-right: 5px;
+    }
+
+    .field { margin: 18px 0; }
+
+    .field label {
+      display: block;
+      margin-bottom: 8px;
+      color: #b6cbd6;
+      font-size: 12px;
+    }
+
+    .field select {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #284658;
+      background: #091f2e;
+      color: white;
+      outline-color: var(--teal);
+    }
+
+    .full-btn { width: 100%; margin-top: 6px; }
+
+    .result {
+      margin-top: 17px;
+      padding: 16px;
+      border-radius: 9px;
+      background: rgba(24, 198, 180, 0.07);
+      border: 1px solid rgba(24, 198, 180, 0.22);
+      display: none;
+    }
+
+    .result h4 {
+      color: var(--teal);
+      margin: 0 0 8px;
+    }
+
+    .result p {
+      color: #c0d1db;
+      font-size: 12px;
+      line-height: 1.8;
+      margin: 5px 0;
+    }
+
+    .data-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .data-item {
+      padding: 16px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: rgba(255,255,255,0.02);
+    }
+
+    .data-item .symbol {
+      font-size: 20px;
+      margin-bottom: 12px;
+    }
+
+    .data-item h4 {
+      font-size: 12px;
+      margin: 0 0 7px;
+    }
+
+    .data-item p {
+      color: var(--muted);
+      font-size: 10px;
+      line-height: 1.7;
+      margin: 0;
+    }
+
+    .notice {
+      margin-top: 20px;
+      padding: 15px 17px;
+      border-radius: 9px;
+      border-left: 3px solid var(--orange);
+      background: rgba(255, 200, 117, 0.06);
+      color: #c2d0d9;
+      font-size: 11px;
+      line-height: 1.8;
+    }
+
+    footer {
+      margin-top: 28px;
+      padding-top: 19px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.8;
+      text-align: center;
+    }
+
+    /* Images éditoriales pour donner à MARISATEL une vraie identité visuelle */
+    .hero {
+      position: relative;
+      overflow: hidden;
+      background:
+        linear-gradient(90deg, rgba(5, 24, 39, .96) 0%, rgba(5, 24, 39, .82) 52%, rgba(5, 24, 39, .35) 100%),
+        url('https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=1800&q=85') center/cover no-repeat !important;
+      border: 1px solid rgba(104, 220, 232, .25);
+      min-height: 300px;
+    }
+    .hero h2, .hero p, .hero .eyebrow, .hero .hero-actions { position: relative; z-index: 1; }
+    .visual-section { margin: 30px 0 34px; }
+    .visual-section .section-heading { margin-bottom: 16px; }
+    .visual-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+    .visual-card {
+      position: relative;
+      min-height: 190px;
+      overflow: hidden;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: var(--panel);
+      box-shadow: 0 10px 30px rgba(0,0,0,.16);
+    }
+    .visual-card img {
+      display: block;
+      width: 100%;
+      height: 190px;
+      object-fit: cover;
+      opacity: .84;
+      transition: transform .35s ease, opacity .35s ease;
+    }
+    .visual-card:hover img { transform: scale(1.04); opacity: 1; }
+    .visual-card .visual-caption {
+      position: absolute;
+      inset: auto 0 0;
+      padding: 28px 16px 15px;
+      background: linear-gradient(transparent, rgba(4, 19, 31, .96));
+    }
+    .visual-caption strong { display: block; font-size: 15px; margin-bottom: 5px; }
+    .visual-caption span { color: #d3e4eb; font-size: 12px; line-height: 1.5; }
+    .visual-note { color: var(--muted); font-size: 11px; margin-top: 10px; line-height: 1.6; }
+    .public-intro {
+      margin: 28px 0;
+      padding: 22px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(24,198,180,.09), rgba(16,40,58,.92));
+    }
+    .public-intro h3 { margin: 0 0 8px; }
+    .public-intro p { margin: 0; color: #c3d5df; line-height: 1.7; font-size: 14px; }
+    @media (max-width: 900px) {
+      .visual-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 700px) {
+      .visual-grid { grid-template-columns: 1fr; }
+      .visual-card, .visual-card img { min-height: 170px; height: 170px; }
+      .hero { min-height: 280px; }
+    }
+
+    .criteria-section { margin: 30px 0; }
+    .criteria-intro { color: #c3d5df; line-height: 1.7; font-size: 14px; margin: 8px 0 18px; }
+    .criteria-toolbar { display:flex; flex-wrap:wrap; align-items:center; gap:12px; margin-bottom:15px; }
+    .criteria-toolbar label { color:#c3d5df; font-size:13px; }
+    .criteria-toolbar select { background:#071c2c; color:#f4f8fb; border:1px solid var(--border); border-radius:8px; padding:10px; }
+    .criteria-table-wrap { overflow-x:auto; border:1px solid var(--border); border-radius:12px; }
+    .criteria-table { width:100%; border-collapse:collapse; min-width:690px; font-size:13px; }
+    .criteria-table th, .criteria-table td { padding:12px 13px; border-bottom:1px solid var(--border); text-align:left; vertical-align:top; }
+    .criteria-table th { background:#0a2233; color:#a8c3d1; font-size:11px; text-transform:uppercase; letter-spacing:.7px; }
+    .criteria-table tr:last-child td { border-bottom:0; }
+    .criteria-table td:first-child { font-weight:700; color:#f4f8fb; }
+    .rating-select { width:100%; min-width:130px; background:#071c2c; color:#f4f8fb; border:1px solid var(--border); border-radius:7px; padding:9px; }
+    .rating-good { color:#61d6a2 !important; }
+    .rating-medium { color:#ffc875 !important; }
+    .rating-bad { color:#ff8e8e !important; }
+    .criteria-summary { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin:16px 0; }
+    .criteria-count { padding:14px; border:1px solid var(--border); border-radius:10px; background:rgba(16,40,58,.7); }
+    .criteria-count strong { display:block; font-size:22px; margin-bottom:4px; }
+    .criteria-count span { color:var(--muted); font-size:12px; }
+    .criteria-alert { border-left:3px solid var(--orange); background:rgba(255,200,117,.08); padding:13px 15px; border-radius:7px; color:#d8e3e9; font-size:12px; line-height:1.7; margin-top:14px; }
+    .criteria-foot { font-size:11px; color:var(--muted); line-height:1.6; margin-top:10px; }
+    @media(max-width:700px) { .criteria-summary { grid-template-columns:1fr; } }
+
+
+
+
+
+    @media (max-width: 1100px) {
+      .metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .data-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .work-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 700px) {
+      .layout { grid-template-columns: 1fr; }
+      .sidebar { padding: 15px; }
+      .brand { margin-bottom: 15px; }
+      .nav-title, .sidebar-note { display: none; }
+      .sidebar nav { display: flex; flex-wrap: wrap; gap: 5px; }
+      .nav-link { padding: 9px; font-size: 11px; }
+      .topbar { padding: 18px; align-items: flex-start; }
+      .content { padding: 17px; }
+      .hero { padding: 21px; }
+      .demo-badge { white-space: normal; text-align: center; }
+      #map { height: 310px; }
+    }
+  </style>
+</head>
+
+<body>
+<div class="layout">
+
+  <aside class="sidebar">
+    <div class="brand">
+     <div class="brand-icon">
+ <img
+   src="./Marisatel_logo_transparent_fixed.png"
+   data-logo-candidates="./2e2b7cff-310a-48cc-823f-e29d1d5e68f9.png|./Marisatel_logo_transparent.png|./Marisatel_logo_transparent_fixed.png"
+   alt="Logo MARISATEL"
+   style="width:43px;height:43px;object-fit:contain;display:block;"
+   onerror="(function(img){var candidates=(img.dataset.logoCandidates||'').split('|');var next=Number(img.dataset.logoTry||0);if(next<candidates.length){img.dataset.logoTry=next+1;img.src=candidates[next];}else{img.style.display='none';img.parentElement.textContent='M';img.parentElement.style.color='#071c2c';img.parentElement.style.fontWeight='800';img.parentElement.style.fontSize='25px';}})(this)">
+</div>
+      <div>
+        <div class="brand-name">MARISATEL</div>
+        <div class="brand-sub">INTELLIGENCE MARINE</div>
+      </div>
+    </div>
+
+    <div class="nav-title">Navigation principale</div>
+    <nav>
+      <a class="nav-link active" href="#accueil">⌂ Tableau de bord</a>
+      <a class="nav-link" href="#carte">◎ Carte marine</a>
+      <a class="nav-link" href="#indicateurs">◈ Indicateurs environnementaux</a>
+      <a class="nav-link" href="#analyse">⌁ Analyse de site</a>
+      <a class="nav-link" href="#donnees">▤ Sources de données</a>
+    </nav>
+
+    <div class="sidebar-note">
+      <strong>Notre mission</strong><br>
+      Accompagner la sélection de sites aquacoles marins grâce aux données géospatiales, à l'observation satellitaire et à l'analyse environnementale.
+    </div>
+  </aside>
+
+  <main>
+    <header class="topbar">
+      <div>
+        <div class="eyebrow">Plateforme d'aide à la décision</div>
+        <h1 id="accueil">Tableau de bord marin</h1>
+      </div>
+      <div class="demo-badge">● Prototype — données de démonstration</div>
+    </header>
+
+    <div class="content">
+
+      <section class="hero">
+        <div class="eyebrow">Observer · Analyser · Décider</div>
+        <h2>L'intelligence satellitaire au service d'une <span class="accent">aquaculture marine durable.</span></h2>
+        <p>
+          Marisatel est un prototype de plateforme d'aide à la décision
+          destiné à l'étude des zones côtières algériennes. Il vise à réunir
+          les informations environnementales, géographiques et océanographiques
+          nécessaires à une première évaluation des sites potentiels d'élevage marin.
+        </p>
+        <div class="hero-actions">
+          <button class="btn btn-primary" onclick="goTo('carte')">Explorer la carte marine ↗</button>
+          <button class="btn" onclick="goTo('analyse')">Évaluer un site</button>
+        </div>
+      </section>
+
+      <section class="visual-section" aria-label="Découvrir l'univers marin de Marisatel">
+        <div class="section-heading">
+          <h2>Explorer l’environnement marin</h2>
+          <span>Images illustratives · pas des produits d’analyse</span>
+        </div>
+        <div class="visual-grid">
+          <article class="visual-card">
+            <img src="https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=900&q=80"
+                 alt="Vue aérienne de la surface de la mer" loading="lazy">
+            <div class="visual-caption">
+              <strong>Observation du littoral</strong>
+              <span>Comprendre le contexte côtier avant l’étude d’un site.</span>
+            </div>
+          </article>
+          <article class="visual-card">
+            <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=900&q=80"
+                 alt="Environnement sous-marin et eau de mer" loading="lazy">
+            <div class="visual-caption">
+              <strong>Écosystème marin</strong>
+              <span>Mettre les indicateurs environnementaux en contexte.</span>
+            </div>
+          </article>
+          <article class="visual-card">
+            <img src="https://images.unsplash.com/photo-1518837695005-2083093ee35b?auto=format&fit=crop&w=900&q=80"
+                 alt="Vagues sur une côte maritime" loading="lazy">
+            <div class="visual-caption">
+              <strong>Dynamique de la mer</strong>
+              <span>Température, houle, courants et conditions du milieu.</span>
+            </div>
+          </article>
+        </div>
+        <p class="visual-note">
+          Les photographies de cette galerie servent à illustrer la plateforme. Elles ne constituent pas
+          des cartes satellitaires ni des preuves de l’état actuel des sites étudiés. Les résultats
+          scientifiques doivent provenir de jeux de données identifiés, datés et documentés.
+        </p>
+      </section>
+
+      <section class="public-intro">
+        <h3>Une plateforme dédiée au littoral algérien</h3>
+        <p>
+          MARISATEL rassemble progressivement des informations géographiques et océanographiques
+          pour accompagner la présélection de zones adaptées à l’aquaculture marine. Les données
+          disponibles sont présentées avec leurs sources, périodes, unités et limites d’interprétation.
+        </p>
+      </section>
+
+      <div class="section-heading" id="indicateurs">
+        <h2>Indicateurs environnementaux</h2>
+        <span>Indicateurs en cours d’intégration et de validation</span>
+      </div>
+
+      <section class="metrics">
+        <div class="metric">
+          <div class="metric-label">Température de surface (SST)</div>
+          <div class="metric-value">22,4 <small>°C</small></div>
+          <div class="metric-foot">Exemple pédagogique · non mesuré</div>
+        </div>
+
+        <div class="metric">
+          <div class="metric-label">Salinité de surface</div>
+          <div class="metric-value">37,1 <small>PSU</small></div>
+          <div class="metric-foot">Exemple pédagogique · non mesuré</div>
+        </div>
+
+        <div class="metric">
+          <div class="metric-label">Chlorophylle-a</div>
+          <div class="metric-value">0,8 <small>mg/m³</small></div>
+          <div class="metric-foot">Exemple pédagogique · non mesuré</div>
+        </div>
+
+        <div class="metric">
+          <div class="metric-label">Profondeur indicative</div>
+          <div class="metric-value">35 <small>m</small></div>
+          <div class="metric-foot">Exemple pédagogique · non mesuré</div>
+        </div>
+      </section>
+
+      <section class="work-grid">
+        <div class="panel" id="carte">
+          <h3>Carte interactive du littoral algérien</h3>
+          <p class="panel-desc">
+            Explorez le littoral et cliquez sur la carte pour examiner un emplacement.
+            La carte de fond nécessite une connexion Internet.
+          </p>
+          <div id="map" aria-label="Carte interactive du littoral algérien"></div>
+          <div class="map-legend">
+            <span><i class="dot" style="background:#18c6b4"></i>Emplacement indicatif</span>
+            <span>Carte de localisation uniquement — aptitude non vérifiée</span>
+          </div>
+          <div id="coordinates" class="panel-desc" style="margin:12px 0 0">
+            Cliquez sur la carte pour afficher les coordonnées.
+          </div>
+        </div>
+
+        <div class="panel" id="analyse">
+          <h3>Pré-évaluation d'un site</h3>
+          <p class="panel-desc">
+            Choisissez une zone pour afficher un exemple de fiche d'étude.
+            Cette fonction ne remplace pas une analyse scientifique.
+          </p>
+
+          <div class="field">
+            <label for="zone">Zone d'étude</label>
+            <select id="zone">
+              <option value="Béni Haoua">Béni Haoua — Chlef</option>
+              <option value="Tipaza">Tipaza</option>
+              <option value="Bou Ismaïl">Bou Ismaïl</option>
+              <option value="Mostaganem">Mostaganem</option>
+              <option value="Oran">Oran</option>
+              <option value="Annaba">Annaba</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="espece">Espèce aquacole envisagée</label>
+            <select id="espece">
+              <option value="Daurade royale">Daurade royale (Sparus aurata)</option>
+              <option value="Bar européen">Bar européen (Dicentrarchus labrax)</option>
+            </select>
+          </div>
+
+          <button class="btn btn-primary full-btn" onclick="analyserSite()">Générer la fiche préliminaire</button>
+
+          <div class="result" id="resultat" aria-live="polite">
+            <h4>Fiche préliminaire</h4>
+            <p id="resultatTexte"></p>
+          </div>
+        </div>
+      </section>
+
+      
+      <section class="criteria-section" id="criteres">
+        <div class="section-heading">
+          <h2>Grille de critères d’aptitude aquacole</h2>
+          <span>Référence : Dosdat et al. (1996), selon le tableau fourni</span>
+        </div>
+        <p class="criteria-intro">
+          Cette grille permet de consigner une appréciation préliminaire des facteurs environnementaux
+          d’un site. Sélectionnez une catégorie uniquement lorsque vous disposez d’une donnée documentée.
+          Les choix ci-dessous sont des annotations de travail et ne constituent pas une conclusion automatique.
+        </p>
+        <div class="criteria-toolbar">
+          <label for="criteria-zone">Zone étudiée</label>
+          <select id="criteria-zone">
+            <option>Béni Haoua — Chlef</option>
+            <option>Ténès — Chlef</option>
+            <option>Tipaza</option>
+            <option>Mostaganem</option>
+            <option>Autre zone</option>
+          </select>
+          <label for="criteria-species">Espèce cible</label>
+          <select id="criteria-species">
+            <option>Dorade (Sparus aurata)</option>
+            <option>Loup de mer / bar (Dicentrarchus labrax)</option>
+          </select>
+        </div>
+        <div class="criteria-table-wrap">
+          <table class="criteria-table">
+            <thead>
+              <tr><th>Facteur</th><th>Repère « Bon » du tableau</th><th>Repère « Moyen » du tableau</th><th>Repère « Mauvais » du tableau</th><th>Appréciation du site</th></tr>
+            </thead>
+            <tbody id="criteria-rows">
+              <tr><td>Exposition</td><td>Partielle</td><td>Protégée</td><td>Forte</td></tr>
+              <tr><td>Hauteur des vagues</td><td>1–3 m</td><td>1 m</td><td>&gt; 3 m</td></tr>
+              <tr><td>Profondeur</td><td>&gt; 30 m</td><td>15–30 m</td><td>&lt; 15 m</td></tr>
+              <tr><td>Hydrodynamisme / chasse</td><td>Fort</td><td>Moyen</td><td>Faible</td></tr>
+              <tr><td>Pollution de l’eau</td><td>Faible</td><td>Moyenne</td><td>Forte</td></tr>
+              <tr><td>Température maximale</td><td>22–24 °C</td><td>24–27 °C</td><td>&gt; 27 °C</td></tr>
+              <tr><td>Température minimale</td><td>12 °C</td><td>10 °C</td><td>&lt; 8 °C</td></tr>
+              <tr><td>Salinité moyenne</td><td>25–35 ‰</td><td>15–25 ‰</td><td>&lt; 15 ‰</td></tr>
+              <tr><td>Variations de salinité</td><td>&lt; 5</td><td>5–10</td><td>&gt; 10</td></tr>
+              <tr><td>Oxygène dissous</td><td>100 %</td><td>70–100 %</td><td>&lt; 70 %</td></tr>
+              <tr><td>Pente</td><td>&gt; 30</td><td>10–30</td><td>&lt; 10</td></tr>
+              <tr><td>Substrat</td><td>Sable ou gravier</td><td>Pierres mélangées</td><td>Vase</td></tr>
+              <tr><td>Statut trophique</td><td>Oligotrophe</td><td>Mésotrophe</td><td>Eutrophe</td></tr>
+              <tr><td>Biosalissures</td><td>Peu</td><td>Modérées</td><td>Importantes</td></tr>
+              <tr><td>Prédateurs</td><td>Absents</td><td>Quelques-uns</td><td>Abondants</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="criteria-summary" aria-live="polite">
+          <div class="criteria-count"><strong id="count-good" class="rating-good">0</strong><span>Facteurs annotés « Bon »</span></div>
+          <div class="criteria-count"><strong id="count-medium" class="rating-medium">0</strong><span>Facteurs annotés « Moyen »</span></div>
+          <div class="criteria-count"><strong id="count-bad" class="rating-bad">0</strong><span>Facteurs annotés « Mauvais »</span></div>
+        </div>
+        <div class="criteria-alert">
+          <strong>Précaution scientifique :</strong> les limites et unités sont reproduites d’après l’image fournie.
+          Certaines catégories se chevauchent ou ne précisent pas l’unité (notamment la pente et les variations
+          de salinité). Les seuils doivent être vérifiés dans la publication originale et adaptés à l’espèce,
+          au système d’élevage et au contexte local avant toute note globale. « Non évalué » n’est pas un résultat défavorable.
+        </div>
+        <p class="criteria-foot">
+          Les appréciations choisies sont des annotations manuelles dans le navigateur et ne sont pas enregistrées
+          dans une base de données. Pour chaque décision, consigner la valeur, l’unité, la date, la source et la
+          résolution spatiale. Les données manquantes doivent rester signalées comme telles.
+        </p>
+      </section>
+
+<div class="section-heading" id="donnees">
+        <h2>Paramètres intégrés au projet</h2>
+        <span>Sources à connecter et à valider</span>
+      </div>
+
+      <section class="data-grid">
+        <div class="data-item">
+          <div class="symbol">🌡️</div>
+          <h4>Température (SST)</h4>
+          <p>Température de surface estimée par satellite, notamment à partir des produits adaptés de Sentinel-3.</p>
+        </div>
+
+        <div class="data-item">
+          <div class="symbol">🧂</div>
+          <h4>Salinité</h4>
+          <p>Données océanographiques et observations de terrain, selon la résolution et la disponibilité des sources.</p>
+        </div>
+
+        <div class="data-item">
+          <div class="symbol">🟢</div>
+          <h4>Chlorophylle-a</h4>
+          <p>Indicateur de la biomasse phytoplanctonique, issu de produits satellitaires adaptés aux eaux côtières.</p>
+        </div>
+
+        <div class="data-item">
+          <div class="symbol">🌊</div>
+          <h4>Bathymétrie</h4>
+          <p>Profondeur du fond marin à étudier à partir de données bathymétriques et de cartes appropriées.</p>
+        </div>
+
+        <div class="data-item">
+          <div class="symbol">🧭</div>
+          <h4>Courants marins</h4>
+          <p>Courants issus de produits océanographiques, de modèles ou de mesures disponibles.</p>
+        </div>
+
+        <div class="data-item">
+          <div class="symbol">🌬️</div>
+          <h4>Vagues</h4>
+          <p>Hauteur et caractéristiques de la houle pour évaluer l'exposition du site.</p>
+        </div>
+
+        <div class="data-item">
+          <div class="symbol">💧</div>
+          <h4>Turbidité</h4>
+          <p>Estimation optique à partir de données adaptées, avec validation de terrain si possible.</p>
+        </div>
+
+        <div class="data-item">
+          <div class="symbol">🫧</div>
+          <h4>Oxygène dissous</h4>
+          <p>Données de terrain ou produits océanographiques appropriés, à vérifier selon leur couverture spatiale.</p>
+        </div>
+      </section>
+
+      <div class="notice">
+        <strong>Important — statut scientifique :</strong>
+        cette version est un prototype d'interface. Les indicateurs numériques affichés sont fictifs
+        et servent uniquement à illustrer la présentation. Aucune recommandation réelle d'implantation
+        ne peut être établie avant l'intégration, la datation et la validation des données, ainsi que
+        l'étude des contraintes réglementaires, écologiques et techniques.
+      </div>
+
+      <footer>
+        <strong>MARISATEL</strong> · Plateforme d'aide à la décision pour l'aquaculture marine durable<br>
+        Prototype académique · Littoral algérien · Version initiale
+      </footer>
+    </div>
+  </main>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+  function goTo(id) {
+    document.getElementById(id).scrollIntoView({ behavior: "smooth" });
+  }
+
+  const mapElement = document.getElementById("map");
+
+  if (typeof L !== "undefined") {
+    const map = L.map("map").setView([36.45, 2.3], 7);
+
+    // Carte classique
+    const carteClassique = L.tileLayer(
+      "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+      {
+        attribution: '&copy; OpenStreetMap',
+        maxZoom: 18
+      }
+    ).addTo(map);
+
+    // Image satellite NASA
+    const nasaSatellite = L.tileLayer.wms(
+      "https://gibs.earthdata.nasa.gov/wms/epsg3857/best/wms.cgi",
+      {
+        layers: "VIIRS_SNPP_CorrectedReflectance_TrueColor",
+        format: "image/jpeg",
+        transparent: false,
+        version: "1.1.1",
+        time: "2026-06-23",
+        attribution: "NASA GIBS",
+        opacity: 1
+      }
+    );
+
+    // Choix du fond de carte
+    L.control.layers(
+      {
+        "Carte classique": carteClassique,
+        "Image satellite NASA": nasaSatellite
+      }
+    ).addTo(map);
+
+    // Données satellitaires SST - Copernicus Marine
+const coucheSST = L.layerGroup();
+
+fetch("./Marisatel_SST_Juin2026.csv")
+  .then(response => {
+    if (!response.ok) {
+      throw new Error("Impossible de charger les données SST de juin 2026.");
+    }
+    return response.text();
+  })
+  .then(csv => {
+    const lignes = csv.trim().split(/\r?\n/);
+
+    if (lignes.length < 2) {
+      throw new Error("Le fichier SST ne contient aucune donnée.");
+    }
+
+    const entetes = lignes[0]
+      .replace(/^\uFEFF/, "")
+      .split(",")
+      .map(nom => nom.trim());
+
+    const indexLat = entetes.indexOf("latitude");
+    const indexLon = entetes.indexOf("longitude");
+    const indexSST = entetes.indexOf("sst_celsius");
+    const indexDate = entetes.indexOf("date_utc");
+
+    if ([indexLat, indexLon, indexSST, indexDate].includes(-1)) {
+      throw new Error(
+        "Colonnes attendues introuvables. Vérifier les en-têtes du CSV."
+      );
+    }
+
+    const pointsParPosition = new Map();
+
+    lignes.slice(1).forEach(ligne => {
+      if (!ligne.trim()) return;
+
+      const valeurs = ligne.split(",");
+
+      const latitude = Number(valeurs[indexLat]);
+      const longitude = Number(valeurs[indexLon]);
+      const temperature = Number(valeurs[indexSST]);
+      const date = valeurs[indexDate]?.trim();
+
+      if (
+        !Number.isFinite(latitude) ||
+        !Number.isFinite(longitude) ||
+        !Number.isFinite(temperature) ||
+        !date
+      ) {
+        return;
+      }
+
+      const cle = `${latitude.toFixed(4)},${longitude.toFixed(4)}`;
+
+      if (!pointsParPosition.has(cle)) {
+        pointsParPosition.set(cle, []);
+      }
+
+      pointsParPosition.get(cle).push({
+        latitude,
+        longitude,
+        temperature,
+        date
+      });
+    });
+
+    pointsParPosition.forEach(mesures => {
+  // ترتيب القياسات من الأحدث إلى الأقدم
+  mesures.sort((a, b) => b.date.localeCompare(a.date));
+
+  const derniere = mesures[0];
+
+  // حساب عدد الأيام المختلفة التي تتوفر فيها قياسات
+  const joursDistincts = new Set(
+    mesures.map(m => m.date)
+  ).size;
+
+function couleurSST(temperature) {
+  if (temperature < 18) return "#2878b5";
+  if (temperature < 21) return "#35a853";
+  if (temperature < 24) return "#f4d03f";
+  if (temperature < 27) return "#ff8755";
+  return "#d93025";
+}
+      const marqueur = L.circleMarker(
+    [derniere.latitude, derniere.longitude],
+    {
+      radius: 5,
+      color: couleurSST(derniere.temperature),
+      fillColor: couleurSST(derniere.temperature),
+      fillOpacity: 0.8,
+      weight: 1
+    }
+  );
+
+  // إنشاء سجل القياسات من الأحدث إلى الأقدم
+  const historique = mesures
+    .map(m => `${m.date} : ${m.temperature.toFixed(2)} °C`)
+    .join("<br>");
+
+  marqueur.bindPopup(`
+    <div style="min-width:220px; max-width:320px; line-height:1.6;">
+
+      <strong style="font-size:15px; color:#123b50;">
+        Température de surface de la mer (SST)
+      </strong>
+
+      <hr>
+
+      <strong>Dernière mesure disponible :</strong><br>
+      <span style="font-size:22px; font-weight:bold; color:#e87543;">
+        ${derniere.temperature.toFixed(2)} °C
+      </span><br>
+
+      <strong>Date :</strong> ${derniere.date}<br>
+
+      <strong>Latitude :</strong>
+      ${derniere.latitude.toFixed(4)}<br>
+
+      <strong>Longitude :</strong>
+      ${derniere.longitude.toFixed(4)}<br>
+
+      <strong>Nombre total de mesures :</strong>
+      ${mesures.length}<br>
+
+      <strong>Nombre de jours avec mesures :</strong>
+      ${joursDistincts}<br>
+
+      <hr>
+
+      <details>
+        <summary style="cursor:pointer; font-weight:bold; color:#167d8d;">
+          Consulter l'historique complet
+        </summary>
+        <div style="margin-top:8px; max-height:180px; overflow-y:auto;">
+          ${historique}
+        </div>
+      </details>
+
+      <hr>
+
+      <small>
+        <strong>Source :</strong> Copernicus Marine<br>
+        <strong>Période :</strong> Juin 2026<br>
+        Les mesures correspondent aux données disponibles
+        pour cette position.
+      </small>
+
+    </div>
+  `);
+
+  coucheSST.addLayer(marqueur);
+});
+
+    console.info(
+      "Données SST chargées :",
+      lignes.length - 1,
+      "lignes ;",
+      pointsParPosition.size,
+      "positions."
+    );
+  })
+  .catch(erreur => {
+    console.error("Erreur de chargement SST :", erreur);
+  });
+
+  coucheSST.addTo(map);
+    // Légende des températures de surface de la mer (SST)
+const legendeSST = L.control({ position: "topleft" });
+
+legendeSST.onAdd = function () {
+  const div = L.DomUtil.create("div", "legende-sst");
+
+  const categories = [
+    { couleur: "#2878b5", texte: "< 18 °C" },
+    { couleur: "#35a853", texte: "18 à < 21 °C" },
+    { couleur: "#f4d03f", texte: "21 à < 24 °C" },
+    { couleur: "#ff8755", texte: "24 à < 27 °C" },
+    { couleur: "#d93025", texte: "≥ 27 °C" }
+  ];
+
+  div.style.background = "white";
+  div.style.color = "#263746";
+  div.style.padding = "10px 12px";
+  div.style.borderRadius = "8px";
+  div.style.boxShadow = "0 1px 6px rgba(0,0,0,0.25)";
+  div.style.lineHeight = "1.7";
+  div.style.fontSize = "12px";
+
+  div.innerHTML = `
+    <strong style="font-size:13px;">
+      Légende SST (°C)
+    </strong>
+    <hr style="margin:5px 0;">
+    ${categories.map(c => `
+      <div>
+        <span style="
+          display:inline-block;
+          width:12px;
+          height:12px;
+          border-radius:50%;
+          background:${c.couleur};
+          margin-right:7px;
+          border:1px solid #777;
+        "></span>
+        ${c.texte}
+      </div>
+    `).join("")}
+  `;
+
+  return div;
+};
+
+legendeSST.addTo(map);
+    
+    // Emplacements indicatifs
+    const locations = [
+      {
+        name: "Béni Haoua",
+        coords: [36.52, 1.57],
+        text: "Zone d'étude envisagée. Son aptitude aquacole reste à évaluer avec des données vérifiées."
+      },
+      {
+        name: "Tipaza",
+        coords: [36.59, 2.45],
+        text: "Emplacement côtier indicatif. Aucune aptitude n'est présumée."
+      },
+      {
+        name: "Mostaganem",
+        coords: [35.94, 0.09],
+        text: "Emplacement côtier indicatif. Aucune aptitude n'est présumée."
+      }
+    ];
+
+    locations.forEach(function(site) {
+      L.marker(site.coords)
+        .addTo(map)
+        .bindPopup(
+          "<strong>" + site.name + "</strong><br>" + site.text
+        );
+    });
+
+    // Afficher les coordonnées au clic
+    map.on("click", function(event) {
+      const lat = event.latlng.lat.toFixed(5);
+      const lon = event.latlng.lng.toFixed(5);
+
+      document.getElementById("coordinates").textContent =
+        "Coordonnées du point sélectionné : latitude " + lat +
+        " ; longitude " + lon +
+        ". Point non évalué scientifiquement.";
+
+      L.popup()
+        .setLatLng(event.latlng)
+        .setContent(
+          "Point sélectionné<br>Latitude : " + lat +
+          "<br>Longitude : " + lon
+        )
+        .openOn(map);
+    });
+
+    // Actualiser la taille de la carte
+    setTimeout(function() {
+      map.invalidateSize();
+    }, 300);
+
+  }
+
+  function analyserSite() {
+    const zone = document.getElementById("zone").value;
+    const espece = document.getElementById("espece").value;
+    const resultat = document.getElementById("resultat");
+    const texte = document.getElementById("resultatTexte");
+
+    texte.textContent =
+      "Zone sélectionnée : " + zone + ". Espèce envisagée : " + espece +
+      ". Étape suivante : collecter et vérifier la température, la salinité, " +
+      "la bathymétrie, les courants, les vagues, la chlorophylle-a, la turbidité " +
+      "et l'oxygène dissous. Les contraintes réglementaires, écologiques et " +
+      "logistiques devront également être étudiées. Conclusion actuelle : " +
+      "données insuffisantes pour classer scientifiquement ce site.";
+
+    resultat.style.display = "block";
+    resultat.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }
+</script>
+
+<script>
+(function(){
+  const tbody = document.getElementById('criteria-rows');
+  if (!tbody) return;
+  tbody.querySelectorAll('tr').forEach((row, i) => {
+    const td = document.createElement('td');
+    const select = document.createElement('select');
+    select.className = 'rating-select';
+    select.setAttribute('aria-label', 'Appréciation pour ' + row.cells[0].textContent);
+    select.innerHTML = '<option value="">Non évalué</option><option value="good">Bon</option><option value="medium">Moyen</option><option value="bad">Mauvais</option>';
+    select.addEventListener('change', updateCounts);
+    td.appendChild(select);
+    row.appendChild(td);
+  });
+  function updateCounts(){
+    const selects = tbody.querySelectorAll('select');
+    document.getElementById('count-good').textContent = [...selects].filter(s=>s.value==='good').length;
+    document.getElementById('count-medium').textContent = [...selects].filter(s=>s.value==='medium').length;
+    document.getElementById('count-bad').textContent = [...selects].filter(s=>s.value==='bad').length;
+  }
+})();
+</script>
+
+
+<!-- MARISATEL logo fallback handler: tests the logo filenames used in the repository. -->
+</body>
+</html>
