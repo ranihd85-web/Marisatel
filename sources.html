@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sources et méthodologie | MARISATEL</title><meta name="description" content="MARISATEL — prototype académique de cartographie et d'aide à la présélection de sites aquacoles marins.">
+<link rel="stylesheet" href="assets/style.css"></head><body>
+<div class="shell"><aside class="sidebar"><a class="brand" href="index.html" style="color:inherit;text-decoration:none"><div class="brandmark">M</div><div><strong>MARISATEL</strong><small>INTELLIGENCE MARINE</small></div></a>
+<div class="navlabel">Navigation principale</div><nav class="nav"><a class="" href="index.html">⌂ &nbsp; Accueil</a><a class="" href="carte.html">◎ &nbsp; Carte marine</a><a class="" href="indicateurs.html">◈ &nbsp; Indicateurs</a><a class="" href="analyse.html">⌁ &nbsp; Analyse du site</a><a class="" href="rapport.html">▤ &nbsp; Rapport scientifique</a><a class="" href="services.html">▧ &nbsp; Services cartographiques</a><a class="active" href="sources.html">⌘ &nbsp; Sources & méthode</a></nav>
+<div class="side-note"><b style="color:var(--teal)">Notre mission</b><br>Transformer des données marines documentées en cartes et analyses utiles à la présélection de sites aquacoles.</div></aside>
+<main class="main"><header class="topbar"><div><div class="eyebrow">Plateforme d’aide à la décision</div><h1>Sources et méthodologie</h1><div class="muted">Traçabilité scientifique et préparation des cartes</div></div><div class="status">Prototype académique · données à valider</div></header>
+
+<div class="notice info"><b>Règle de traçabilité :</b> pour chaque couche, conserver la source exacte, le nom du produit, la période, la date de téléchargement, l’unité, la résolution spatiale et les contrôles qualité. Ne pas confondre image de fond cartographique et couche de données scientifiques.</div>
+<section class="grid two">
+<article class="card"><h3>Température de surface</h3><p>Produit satellitaire adapté au bassin méditerranéen. Choisir la période et vérifier les pixels valides.</p><a target="_blank" rel="noopener" href="https://data.marine.copernicus.eu/">Catalogue Copernicus Marine ↗</a></article>
+<article class="card"><h3>Chlorophylle-a / couleur de l’océan</h3><p>Utiliser le produit exact de chlorophylle-a, vérifier les unités, le niveau de traitement et les limites près du littoral.</p><a target="_blank" rel="noopener" href="https://data.marine.copernicus.eu/">Catalogue Copernicus Marine ↗</a></article>
+<article class="card"><h3>Salinité, courants et oxygène</h3><p>Peuvent provenir de modèles ou réanalyses, ou de mesures in situ. La provenance doit être écrite explicitement dans l’interface.</p><a target="_blank" rel="noopener" href="https://data.marine.copernicus.eu/">Catalogue Copernicus Marine ↗</a></article>
+<article class="card"><h3>Bathymétrie</h3><p>La profondeur nécessite une source bathymétrique dédiée; conserver la résolution et les métadonnées.</p><a target="_blank" rel="noopener" href="https://emodnet.ec.europa.eu/en/bathymetry">EMODnet Bathymetry ↗</a></article>
+<article class="card"><h3>Traitement des données</h3><p>Selon le format : QGIS, SNAP, SeaDAS ou outils compatibles NetCDF/GeoTIFF. Le choix dépend du produit réel.</p><a target="_blank" rel="noopener" href="https://qgis.org/">QGIS ↗</a></article>
+<article class="card"><h3>Code du prototype</h3><p>Les fichiers HTML sont séparés par page, les styles et scripts sont partagés, les liens sont relatifs pour fonctionner sur GitHub Pages projet.</p><a target="_blank" rel="noopener" href="https://github.com/ranihd85-web/Marisatel">Dépôt MARISATEL ↗</a></article>
+</section>
+<div class="section-title"><h2>Fiche à remplir pour chaque fichier</h2><p>Avant de l’intégrer</p></div>
+<div class="table-wrap"><table><thead><tr><th>Champ</th><th>À renseigner</th></tr></thead><tbody>
+<tr><td>Nom du fichier</td><td>Nom exact téléchargé</td></tr><tr><td>Variable et unité</td><td>Vérifier dans les métadonnées, ne pas supposer</td></tr><tr><td>Source et produit</td><td>Fournisseur, nom du produit et version</td></tr><tr><td>Date / période</td><td>Date d’observation ou période de moyenne</td></tr><tr><td>Résolution</td><td>Résolution spatiale et fréquence temporelle</td></tr><tr><td>Format</td><td>NetCDF, GeoTIFF, CSV, GeoPackage, etc.</td></tr><tr><td>Contrôle qualité</td><td>Valeurs manquantes, pixels invalides, vérification terrain</td></tr></tbody></table></div>
+<div class="notice"><b>Seuils d’aptitude :</b> la grille Dosdat et al. (1996) et les autres tableaux du mémoire doivent être transcrits exactement, avec leurs unités et leur source. Les classes propres à chaque variable ne peuvent pas être fixées par une règle unique ni générées automatiquement à partir d’une simple image.</div>
+
+<footer class="footer"><b>MARISATEL · INTELLIGENCE MARINE</b><br>Prototype de mémoire — littoral algérien. Les cartes thématiques définitives seront activées après intégration et contrôle des produits spatiaux. <a href="sources.html">Sources et limites</a>.</footer></main></div>
+<script src="assets/app.js"></script></body></html>

@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Analyse du site | MARISATEL</title><meta name="description" content="MARISATEL — prototype académique de cartographie et d'aide à la présélection de sites aquacoles marins.">
+<link rel="stylesheet" href="assets/style.css"></head><body>
+<div class="shell"><aside class="sidebar"><a class="brand" href="index.html" style="color:inherit;text-decoration:none"><div class="brandmark">M</div><div><strong>MARISATEL</strong><small>INTELLIGENCE MARINE</small></div></a>
+<div class="navlabel">Navigation principale</div><nav class="nav"><a class="" href="index.html">⌂ &nbsp; Accueil</a><a class="" href="carte.html">◎ &nbsp; Carte marine</a><a class="" href="indicateurs.html">◈ &nbsp; Indicateurs</a><a class="active" href="analyse.html">⌁ &nbsp; Analyse du site</a><a class="" href="rapport.html">▤ &nbsp; Rapport scientifique</a><a class="" href="services.html">▧ &nbsp; Services cartographiques</a><a class="" href="sources.html">⌘ &nbsp; Sources & méthode</a></nav>
+<div class="side-note"><b style="color:var(--teal)">Notre mission</b><br>Transformer des données marines documentées en cartes et analyses utiles à la présélection de sites aquacoles.</div></aside>
+<main class="main"><header class="topbar"><div><div class="eyebrow">Plateforme d’aide à la décision</div><h1>Analyse du site</h1><div class="muted">Présélection raisonnée — sans décision artificielle</div></div><div class="status">Prototype académique · données à valider</div></header>
+
+<section class="card"><h2>Configuration de l’étude</h2><p>Le module prépare une fiche de présélection. Il ne rend pas de décision automatique tant que les données et seuils ne sont pas validés.</p>
+<div class="form-grid"><div class="field"><label for="analysisZone">Zone d’étude</label><select id="analysisZone"><option>Béni Haoua — Chlef</option><option>Ténès — Chlef</option><option>Mostaganem</option><option>Tipaza</option><option>Autre zone</option></select></div>
+<div class="field"><label for="species">Espèce cible</label><select id="species"><option value="Sparus aurata">Dorade (Sparus aurata)</option><option value="Dicentrarchus labrax">Loup de mer / bar (Dicentrarchus labrax)</option></select></div>
+<div class="field"><label for="period">Période</label><input id="period" type="month" value="2026-06"></div>
+<div class="field"><label for="technique">Technique d’élevage</label><select id="technique"><option>Cages flottantes</option><option>Cages fixes</option><option>Autre technique à préciser</option></select></div>
+<div class="field full"><label for="analysisNotes">Remarques et contraintes connues</label><textarea id="analysisNotes" placeholder="Ex. proximité d’un port, rejets, exposition, données de terrain disponibles…"></textarea></div></div>
+<div class="actions"><button class="primary" id="generateAssessment">Générer la fiche de présélection</button><button id="clearAssessment">Effacer</button></div>
+<div id="assessmentResult" class="notice info">Aucune fiche générée.</div>
+</section>
+<div class="notice"><b>Principe :</b> la disponibilité d’une valeur ne signifie pas automatiquement qu’un site est favorable. Il faut vérifier la qualité des données, les critères d’espèce, la bathymétrie, l’hydrodynamisme, les risques de pollution, les contraintes réglementaires et la validation sur le terrain.</div>
+
+<footer class="footer"><b>MARISATEL · INTELLIGENCE MARINE</b><br>Prototype de mémoire — littoral algérien. Les cartes thématiques définitives seront activées après intégration et contrôle des produits spatiaux. <a href="sources.html">Sources et limites</a>.</footer></main></div>
+<script src="assets/app.js"></script></body></html>
