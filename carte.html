@@ -1,21 +1,361 @@
+```html
 <!doctype html>
-<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Carte marine | MARISATEL</title><meta name="description" content="MARISATEL — prototype académique de cartographie et d'aide à la présélection de sites aquacoles marins.">
-<link rel="stylesheet" href="assets/style.css"></head><body>
-<div class="shell"><aside class="sidebar"><a class="brand" href="index.html" style="color:inherit;text-decoration:none"><div class="brandmark">M</div><div><strong>MARISATEL</strong><small>INTELLIGENCE MARINE</small></div></a>
-<div class="navlabel">Navigation principale</div><nav class="nav"><a class="" href="index.html">⌂ &nbsp; Accueil</a><a class="active" href="carte.html">◎ &nbsp; Carte marine</a><a class="" href="indicateurs.html">◈ &nbsp; Indicateurs</a><a class="" href="analyse.html">⌁ &nbsp; Analyse du site</a><a class="" href="rapport.html">▤ &nbsp; Rapport scientifique</a><a class="" href="services.html">▧ &nbsp; Services cartographiques</a><a class="" href="sources.html">⌘ &nbsp; Sources & méthode</a></nav>
-<div class="side-note"><b style="color:var(--teal)">Notre mission</b><br>Transformer des données marines documentées en cartes et analyses utiles à la présélection de sites aquacoles.</div></aside>
-<main class="main"><header class="topbar"><div><div class="eyebrow">Plateforme d’aide à la décision</div><h1>Carte marine</h1><div class="muted">Localisation des zones d’étude et préparation des couches</div></div><div class="status">Prototype académique · données à valider</div></header>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Carte marine | MARISATEL</title>
+<meta name="description" content="Cartographie interactive des données océanographiques de MARISATEL.">
 
-<div class="grid two"><section class="card"><h2>Zone d’étude</h2><p>Choisissez une zone de travail pour préparer l’intégration des données.</p>
-<div class="field"><label for="zoneSelect">Zone côtière</label><select id="zoneSelect"><option>Béni Haoua — Chlef</option><option>Ténès — Chlef</option><option>Mostaganem</option><option>Tipaza</option><option>Autre zone</option></select></div>
-<div class="field" style="margin-top:12px"><label for="mapDate">Période d’étude</label><input id="mapDate" type="month" value="2026-06"></div>
-<div class="actions"><button class="primary" id="locateZone">Centrer la zone</button><button id="resetMap">Réinitialiser</button></div>
-</section><section class="card"><h2>État des couches</h2><p>Les fonds cartographiques peuvent être affichés en ligne. Les couches scientifiques ne seront considérées comme disponibles qu’après ajout des fichiers géoréférencés.</p>
-<ul class="muted"><li>Fond géographique : dépend de la connexion internet.</li><li>Points CSV : intégrables si les colonnes sont reconnues.</li><li>Raster SST, chlorophylle, salinité, bathymétrie : à ajouter après validation.</li></ul></section></div>
-<div class="section-title"><h2>Carte de localisation</h2><p>Cette carte ne représente pas encore les valeurs thématiques.</p></div>
-<div class="map-placeholder"><div><div class="mapicon">🌐</div><strong>Emplacement réservé à la carte interactive</strong><p>La couche de fond et les couches scientifiques seront connectées dans la prochaine étape. Aucune valeur n’est inventée dans cette vue.</p><a class="btn" href="sources.html">Voir la méthode d’intégration</a></div></div>
-<div class="notice info">La carte de fond sert à la localisation. Elle ne remplace pas une carte scientifique SST, chlorophylle, salinité ou bathymétrie. Chaque couche thématique doit indiquer sa variable, sa source, sa période, sa résolution et sa légende.</div>
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 
-<footer class="footer"><b>MARISATEL · INTELLIGENCE MARINE</b><br>Prototype de mémoire — littoral algérien. Les cartes thématiques définitives seront activées après intégration et contrôle des produits spatiaux. <a href="sources.html">Sources et limites</a>.</footer></main></div>
-<script src="assets/app.js"></script></body></html>
+<style>
+.map-layout{display:grid;grid-template-columns:290px minmax(0,1fr);gap:18px;margin:24px 30px}
+.map-panel,.map-main{background:#fff;border:1px solid var(--border);border-radius:12px;padding:20px;min-width:0}
+.map-panel h2,.map-main h2{margin-top:0;color:var(--navy)}
+.field{display:grid;gap:6px;margin:14px 0}
+.field label{font-size:12px;font-weight:700;color:var(--text)}
+.field select,.field input{width:100%;padding:10px;border:1px solid var(--border);border-radius:7px;background:#fff}
+.map-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:15px}
+.map-actions button{padding:10px 12px;border:1px solid var(--border);border-radius:7px;background:#f4f8fb;cursor:pointer}
+.map-actions button.primary{background:var(--teal);border-color:var(--teal);color:#062b38;font-weight:700}
+#marineMap{height:510px;width:100%;border-radius:9px;background:#e8f0f4;z-index:1}
+.map-description{font-size:12px;color:var(--muted);line-height:1.8}
+.map-status{margin-top:13px;padding:12px;border-radius:8px;background:#eaf7fa;color:#365e72;font-size:11px;line-height:1.8}
+.map-legend{display:flex;gap:12px;flex-wrap:wrap;margin-top:13px;font-size:11px;color:var(--muted)}
+.legend-dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px}
+.map-table-wrap{overflow:auto;margin-top:20px}
+.map-table{width:100%;border-collapse:collapse;font-size:11px}
+.map-table th,.map-table td{padding:9px;border:1px solid var(--border);text-align:left;white-space:nowrap}
+.map-table th{background:#edf4f8;color:var(--navy)}
+.brand-logo{width:43px;height:43px;object-fit:contain;border-radius:9px;background:#fff}
+@media(max-width:900px){.map-layout{grid-template-columns:1fr;margin:16px}.map-panel,.map-main{padding:15px}#marineMap{height:400px}}
+@media(max-width:600px){#marineMap{height:330px}.topbar{padding:15px}}
+</style>
+</head>
+
+<body>
+<div class="shell">
+<aside class="sidebar">
+  <a class="brand" href="index.html" style="color:inherit;text-decoration:none">
+    <img class="brand-logo" src="Marisatel_logo_transparent_fixed.png" alt="Logo MARISATEL"
+         onerror="this.onerror=null;this.src='Marisatel_logo_transparent.png';this.onerror=function(){this.style.display='none'}">
+    <div><strong>MARISATEL</strong><small>INTELLIGENCE MARINE</small></div>
+  </a>
+
+  <div class="navlabel">Navigation principale</div>
+  <nav class="nav">
+    <a href="index.html">⌂ &nbsp; Accueil</a>
+    <a class="active" href="carte.html">◎ &nbsp; Carte marine</a>
+    <a href="indicateurs.html">◈ &nbsp; Indicateurs</a>
+    <a href="analyse.html">⌁ &nbsp; Analyse du site</a>
+    <a href="rapport.html">▤ &nbsp; Rapport scientifique</a>
+    <a href="services.html">▧ &nbsp; Services cartographiques</a>
+    <a href="sources.html">⌘ &nbsp; Sources &amp; méthode</a>
+  </nav>
+
+  <div class="side-note">
+    <b style="color:var(--teal)">Notre mission</b><br>
+    Transformer des données marines documentées en cartes et analyses utiles à la présélection de sites aquacoles.
+  </div>
+</aside>
+
+<main class="main">
+<header class="topbar">
+  <div>
+    <div class="eyebrow">Plateforme d’aide à la décision</div>
+    <h1>Carte marine</h1>
+    <div class="muted">Visualisation géographique des données disponibles</div>
+  </div>
+  <div class="status">Prototype académique · données à valider</div>
+</header>
+
+<div class="map-layout">
+  <section class="map-panel">
+    <h2>Paramètres cartographiques</h2>
+    <p class="map-description">Sélectionnez une zone et un indicateur. Seules les observations réellement présentes dans le fichier choisi seront affichées.</p>
+
+    <div class="field">
+      <label for="zoneSelect">Zone côtière</label>
+      <select id="zoneSelect">
+        <option value="beni">Béni Haoua — Chlef</option>
+        <option value="tenes">Ténès — Chlef</option>
+        <option value="mosta">Mostaganem</option>
+        <option value="tipaza">Tipaza</option>
+        <option value="all">Toutes les zones / points du fichier</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="indicatorSelect">Indicateur environnemental</label>
+      <select id="indicatorSelect">
+        <option value="sst">Température de surface (SST)</option>
+        <option value="salinity">Salinité</option>
+        <option value="chlorophyll">Chlorophylle-a</option>
+        <option value="turbidity">Turbidité / SPM</option>
+        <option value="current">Vitesse des courants</option>
+        <option value="oxygen">Oxygène dissous</option>
+        <option value="waves">Hauteur moyenne des vagues</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="mapDate">Période souhaitée</label>
+      <input id="mapDate" type="month" value="2026-06">
+    </div>
+
+    <div class="map-actions">
+      <button class="primary" id="loadData">Afficher les données</button>
+      <button id="resetMap">Réinitialiser la vue</button>
+    </div>
+
+    <div id="dataStatus" class="map-status" role="status" aria-live="polite">
+      Préparation de la carte…
+    </div>
+
+    <div class="map-legend">
+      <span><i class="legend-dot" style="background:#1ca88d"></i>Valeur basse</span>
+      <span><i class="legend-dot" style="background:#f0a43c"></i>Valeur intermédiaire</span>
+      <span><i class="legend-dot" style="background:#d84b4b"></i>Valeur élevée</span>
+    </div>
+    <p class="map-description">Les couleurs représentent uniquement les valeurs des points disponibles. Elles ne constituent pas une interpolation raster ni une classification d’aptitude aquacole.</p>
+  </section>
+
+  <section class="map-main">
+    <h2>Carte interactive</h2>
+    <p class="map-description">Cliquez sur un point pour afficher sa valeur, ses coordonnées et les métadonnées disponibles.</p>
+    <div id="marineMap" aria-label="Carte interactive des observations marines"></div>
+    <div class="map-table-wrap">
+      <table class="map-table">
+        <thead>
+          <tr><th>Date / période</th><th>Latitude</th><th>Longitude</th><th>Valeur</th><th>Unité</th><th>Source</th></tr>
+        </thead>
+        <tbody id="dataRows">
+          <tr><td colspan="6">Chargement des données…</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>
+
+<div class="notice info">
+  <b>Limite scientifique :</b> les marqueurs représentent des observations ponctuelles des fichiers CSV. Le fond cartographique sert à la localisation uniquement. Il ne remplace pas une carte thématique satellitaire ou un raster océanographique validé.
+</div>
+
+<footer class="footer">
+  <b>MARISATEL · INTELLIGENCE MARINE</b><br>
+  Prototype de mémoire — littoral algérien. Sources, dates, unités et limites doivent être vérifiées avant toute conclusion.
+  <a href="sources.html">Sources et limites</a>.
+</footer>
+</main>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+(function(){
+  const zoneCenters={
+    beni:[36.56,1.57],
+    tenes:[36.52,1.31],
+    mosta:[35.93,0.09],
+    tipaza:[36.59,2.45],
+    all:[36.2,1.2]
+  };
+
+  const configs={
+    sst:{
+      file:"Marisatel_SST_23-06-2026_pixels.csv",
+      candidates:["sst_celsius","sst","temperature","sst_value"],
+      label:"Température de surface",unit:"°C"
+    },
+    salinity:{
+      file:"Salinite_23-06-2026.csv",
+      candidates:["salinity_value","salinity","sss","salinite"],
+      label:"Salinité",unit:"PSU"
+    },
+    chlorophyll:{
+      file:"Chlorophylle_a_carte_Juin2026.csv",
+      candidates:["chlorophyll_a_mg_m3","chlorophyll","chlor_a","chl"],
+      label:"Chlorophylle-a",unit:"mg/m³"
+    },
+    turbidity:{
+      file:"Turbidite_carte_Juin2026.csv",
+      candidates:["turbidity","spm","turbidite","value"],
+      label:"Turbidité / SPM",unit:"à vérifier dans le fichier"
+    },
+    current:{
+      file:"Vitesse_courant_23-06-2026.csv",
+      candidates:["current_speed","speed","vitesse","current_velocity","value"],
+      label:"Vitesse des courants",unit:"à vérifier dans le fichier"
+    },
+    oxygen:{
+      file:"Oxygene_dissous_moyen_Juin2026.csv",
+      candidates:["oxygen_dissolved","dissolved_oxygen","oxygen","oxygene","value"],
+      label:"Oxygène dissous",unit:"à vérifier dans le fichier"
+    },
+    waves:{
+      file:"Hauteur_vague_moyenne_Juin2026.csv",
+      candidates:["wave_height","significant_wave_height","height","hauteur","value"],
+      label:"Hauteur moyenne des vagues",unit:"m (à confirmer dans le fichier)"
+    }
+  };
+
+  const map=L.map("marineMap").setView(zoneCenters.beni,9);
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{
+    maxZoom:18,
+    attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  }).addTo(map);
+
+  let markers=L.layerGroup().addTo(map);
+  let allData=[];
+
+  const $=id=>document.getElementById(id);
+  const status=$("dataStatus");
+  const rows=$("dataRows");
+
+  function parseCSV(text){
+    const lines=text.replace(/^\uFEFF/,"").trim().split(/\r?\n/);
+    if(lines.length<2) return [];
+    const headers=lines[0].split(",").map(s=>s.trim().replace(/^"|"$/g,""));
+    return lines.slice(1).filter(Boolean).map(line=>{
+      const values=line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/)
+        .map(s=>s.trim().replace(/^"|"$/g,""));
+      const obj={};
+      headers.forEach((h,i)=>obj[h]=values[i]??"");
+      return obj;
+    });
+  }
+
+  function field(obj,names){
+    const keys=Object.keys(obj);
+    for(const name of names){
+      const found=keys.find(k=>k.toLowerCase()===name.toLowerCase());
+      if(found && obj[found]!=="" && obj[found]!=null) return obj[found];
+    }
+    return "";
+  }
+
+  function normalize(row,cfg){
+    const lat=Number(field(row,["latitude","lat","y"]));
+    const lon=Number(field(row,["longitude","lon","long","lng","x"]));
+    const valueRaw=field(row,cfg.candidates);
+    const value=Number(valueRaw);
+    if(!Number.isFinite(lat)||!Number.isFinite(lon)||
+       Math.abs(lat)>90||Math.abs(lon)>180||
+       valueRaw===""||!Number.isFinite(value)) return null;
+    return {
+      lat,lon,value,
+      date:field(row,["date_utc","date_period","date","period","time"])||"Non précisée",
+      source:field(row,["source","product","dataset"])||"Source non précisée",
+      quality:field(row,["quality_level","quality_note","data_type"])||"",
+      original:row
+    };
+  }
+
+  function colorFor(value,min,max){
+    if(min===max) return "#1ca88d";
+    const p=(value-min)/(max-min);
+    if(p<.33) return "#1ca88d";
+    if(p<.67) return "#f0a43c";
+    return "#d84b4b";
+  }
+
+  function escapeHTML(s){
+    return String(s).replace(/[&<>"']/g,c=>({
+      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+    }[c]));
+  }
+
+  function showRows(data,cfg){
+    rows.innerHTML="";
+    if(!data.length){
+      rows.innerHTML='<tr><td colspan="6">Aucune observation exploitable trouvée dans ce fichier.</td></tr>';
+      return;
+    }
+    data.slice(0,150).forEach(d=>{
+      const tr=document.createElement("tr");
+      tr.innerHTML=
+        `<td>${escapeHTML(d.date)}</td>
+         <td>${d.lat.toFixed(4)}</td>
+         <td>${d.lon.toFixed(4)}</td>
+         <td><b>${d.value}</b></td>
+         <td>${escapeHTML(cfg.unit)}</td>
+         <td>${escapeHTML(d.source)}</td>`;
+      rows.appendChild(tr);
+    });
+  }
+
+  async function loadData(){
+    const key=$("indicatorSelect").value;
+    const cfg=configs[key];
+    markers.clearLayers();
+    rows.innerHTML='<tr><td colspan="6">Chargement…</td></tr>';
+    status.textContent="Lecture du fichier "+cfg.file+"…";
+
+    try{
+      const response=await fetch(encodeURI(cfg.file),{cache:"no-store"});
+      if(!response.ok) throw new Error("Fichier introuvable ("+response.status+")");
+      const text=await response.text();
+      const parsed=parseCSV(text);
+      const normalized=parsed.map(r=>normalize(r,cfg)).filter(Boolean);
+
+      const zone=$("zoneSelect").value;
+      const center=zoneCenters[zone]||zoneCenters.beni;
+
+      // Les coordonnées disponibles sont affichées sans inventer une zone d'échantillonnage.
+      const filtered=zone==="all"?normalized:normalized.filter(d=>
+        Math.abs(d.lat-center[0])<0.45 && Math.abs(d.lon-center[1])<0.65
+      );
+
+      allData=filtered;
+      if(!filtered.length){
+        status.textContent="Le fichier est accessible, mais aucune ligne ne correspond aux colonnes attendues ou à cette zone. Vérifiez les en-têtes et coordonnées.";
+        showRows([],cfg);
+        map.setView(center,8);
+        return;
+      }
+
+      const vals=filtered.map(d=>d.value);
+      const min=Math.min(...vals),max=Math.max(...vals);
+      filtered.forEach(d=>{
+        const marker=L.circleMarker([d.lat,d.lon],{
+          radius:7,weight:1.5,color:"#ffffff",
+          fillColor:colorFor(d.value,min,max),fillOpacity:.9
+        });
+        marker.bindPopup(
+          `<b>${escapeHTML(cfg.label)}</b><br>`+
+          `Valeur : <b>${d.value} ${escapeHTML(cfg.unit)}</b><br>`+
+          `Date/période : ${escapeHTML(d.date)}<br>`+
+          `Latitude : ${d.lat}<br>Longitude : ${d.lon}<br>`+
+          `Source : ${escapeHTML(d.source)}<br>`+
+          (d.quality?`Qualité : ${escapeHTML(d.quality)}`:"")
+        );
+        marker.addTo(markers);
+      });
+
+      const bounds=L.latLngBounds(filtered.map(d=>[d.lat,d.lon]));
+      if(bounds.isValid()) map.fitBounds(bounds.pad(.2),{maxZoom:10});
+      showRows(filtered,cfg);
+      status.textContent=`${filtered.length} point(s) affiché(s) · ${cfg.label} · fichier ${cfg.file}. Les points ne constituent pas un raster continu.`;
+    }catch(err){
+      rows.innerHTML='<tr><td colspan="6">Impossible de lire le fichier. Vérifiez son nom et son emplacement dans le dépôt GitHub.</td></tr>';
+      status.textContent="Erreur de chargement : "+err.message+". La page doit être ouverte depuis GitHub Pages, pas depuis un fichier local.";
+    }
+  }
+
+  $("loadData").addEventListener("click",loadData);
+  $("indicatorSelect").addEventListener("change",loadData);
+  $("zoneSelect").addEventListener("change",loadData);
+  $("mapDate").addEventListener("change",loadData);
+  $("resetMap").addEventListener("click",()=>{
+    const center=zoneCenters[$("zoneSelect").value]||zoneCenters.beni;
+    map.setView(center,9);
+  });
+
+  map.whenReady(()=>setTimeout(()=>map.invalidateSize(),150));
+  loadData();
+})();
+</script>
+</body>
+</html>
+```
