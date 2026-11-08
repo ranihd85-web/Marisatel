@@ -143,21 +143,12 @@
   <b>Limite scientifique :</b> les marqueurs représentent des observations ponctuelles des fichiers CSV. Le fond cartographique sert à la localisation uniquement. Il ne remplace pas une carte thématique satellitaire ou un raster océanographique validé.
 </div>
 
-<section class="map-main" style="margin:24px 30px">
-  <h2>Carte satellitaire — Chlorophylle-a</h2>
-  <p class="map-description">
-    Ténès — Béni Haoua, Algérie · Produit du 15 octobre 2026
-  </p>
-  <img
-    src="chlorophylle_sur_image_satellite_reelle_Tenes_Beni_Haoua_2026-10-15.png"
-    alt="Carte satellitaire de la chlorophylle-a à Ténès et Béni Haoua"
-    style="display:block;width:100%;height:auto;border-radius:10px"
-  >
-  <p class="map-description">
-    Source indiquée sur la carte : Copernicus Marine / OCEANCOLOUR.
-    Concentration exprimée en mg/m³. Produit à vérifier avant toute
-    interprétation scientifique.
-  </p>
+<section class="map-main" id="referenceMapPanel" style="margin:24px 30px" hidden>
+  <h2 id="referenceMapTitle">Carte scientifique de référence</h2>
+  <p class="map-description" id="referenceMapDate"></p>
+  <img id="referenceMapImage" src="" alt=""
+       style="display:block;width:100%;height:auto;max-height:760px;object-fit:contain;border-radius:10px">
+  <p class="map-description" id="referenceMapCaption"></p>
 </section>
   <footer class="footer">
   <b>MARISATEL · INTELLIGENCE MARINE</b><br>
@@ -216,6 +207,46 @@ candidates:["value","salinity_value","salinity","sss","salinite"],
     }
   };
 
+  // Images de référence disponibles : les indicateurs sans image restent sans carte affichée.
+  const referenceImages={
+    chlorophyll:{
+      file:"chlorophylle_sur_image_satellite_reelle_Tenes_Beni_Haoua_2026-10-15.png",
+      title:"Carte scientifique de référence — Chlorophylle-a",
+      caption:"Concentration en chlorophylle-a (mg/m³). Image du 15 octobre 2026 ; distincte des données CSV de juin 2026."
+    },
+    sst:{
+      file:"temperature_sur_image_satellite_reelle_Tenes_Beni_Haoua_2026-10-15.png",
+      title:"Carte scientifique de référence — Température de surface",
+      caption:"Température de surface (°C). Image du 15 octobre 2026 ; distincte des données CSV de juin 2026."
+    },
+    salinity:{
+      file:"salinite_sur_image_satellite_reelle_Tenes_Beni_Haoua_2026-10-15.png",
+      title:"Carte scientifique de référence — Salinité",
+      caption:"Salinité de surface selon l’unité indiquée sur le produit. Image du 15 octobre 2026 ; distincte des données CSV de juin 2026."
+    },
+    current:{
+      file:"courants_sur_image_satellite_reelle_Tenes_Beni_Haoua_2026-10-15.png",
+      title:"Carte scientifique de référence — Courants marins",
+      caption:"Vitesse (m/s) et direction du déplacement. Image du 15 octobre 2026 ; distincte des données CSV du 23 juin 2026."
+    }
+  };
+
+  function updateReferenceMap(){
+    const key=$("indicatorSelect").value;
+    const cfg=referenceImages[key];
+    const panel=$("referenceMapPanel");
+    if(!cfg){
+      panel.hidden=true;
+      return;
+    }
+    panel.hidden=false;
+    $("referenceMapTitle").textContent=cfg.title;
+    $("referenceMapDate").textContent="Ténès — Béni Haoua, Algérie · Image de référence : 15 octobre 2026.";
+    $("referenceMapImage").src=cfg.file;
+    $("referenceMapImage").alt=cfg.title+" — Ténès et Béni Haoua";
+    $("referenceMapCaption").textContent=cfg.caption;
+  }
+
   const map=L.map("marineMap").setView(zoneCenters.beni,9);
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{
     maxZoom:18,
@@ -261,7 +292,7 @@ candidates:["value","salinity_value","salinity","sss","salinite"],
        valueRaw===""||!Number.isFinite(value)) return null;
     return {
       lat,lon,value,
-      date:field(row,["date_utc","date_period","date","period","time"])||"Non précisée",
+      date:field(row,["date_utc","period_utc","date_period","date","period","time"])||"Non précisée",
       source:field(row,["source","product","dataset"])||"Source non précisée",
       quality:field(row,["quality_level","quality_note","data_type"])||"",
       original:row
@@ -313,7 +344,13 @@ candidates:["value","salinity_value","salinity","sss","salinite"],
       if(!response.ok) throw new Error("Fichier introuvable ("+response.status+")");
       const text=await response.text();
       const parsed=parseCSV(text);
-      const normalized=parsed.map(r=>normalize(r,cfg)).filter(Boolean);
+      let normalized=parsed.map(r=>normalize(r,cfg)).filter(Boolean);
+
+      // Respecter le mois choisi lorsque la date/période est présente dans le CSV.
+      const selectedMonth=$("mapDate").value;
+      if(selectedMonth){
+        normalized=normalized.filter(d=>d.date && d.date.includes(selectedMonth));
+      }
 
       const zone=$("zoneSelect").value;
       const center=zoneCenters[zone]||zoneCenters.beni;
@@ -360,7 +397,7 @@ candidates:["value","salinity_value","salinity","sss","salinite"],
   }
 
   $("loadData").addEventListener("click",loadData);
-  $("indicatorSelect").addEventListener("change",loadData);
+  $("indicatorSelect").addEventListener("change",()=>{updateReferenceMap();loadData();});
   $("zoneSelect").addEventListener("change",loadData);
   $("mapDate").addEventListener("change",loadData);
   $("resetMap").addEventListener("click",()=>{
@@ -369,6 +406,7 @@ candidates:["value","salinity_value","salinity","sss","salinite"],
   });
 
   map.whenReady(()=>setTimeout(()=>map.invalidateSize(),150));
+  updateReferenceMap();
   loadData();
 })();
 </script>
