@@ -245,8 +245,28 @@ button,a{-webkit-tap-highlight-color:transparent}
   .section-title{align-items:flex-start;flex-direction:column}
   .footer{padding:20px 17px}
 }
-.brand-image{object-fit:contain;background:#fff;padding:2px;border-radius:12px}
-.ocean-photo{min-height:300px;border-radius:14px;background:linear-gradient(0deg,rgba(3,24,42,.78),rgba(3,24,42,.08)),url("assets/hero_marine.jpg") center 48%/cover no-repeat;display:flex;flex-direction:column;justify-content:space-between;padding:18px}
+..brand-image{
+  width:52px;
+  height:52px;
+  object-fit:contain;
+  background:transparent;
+  padding:0;
+  border-radius:50%;
+  overflow:hidden;
+  flex-shrink:0;
+}
+.ocean-photo{
+  min-height:300px;
+  border-radius:14px;
+  background:
+    linear-gradient(0deg,rgba(3,24,42,.55),rgba(3,24,42,.08)),
+    url("image_satellite_reelle_Tenes_Beni_Haoua_Sentinel2C_2026-10-13.png")
+    center/cover no-repeat;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  padding:18px;
+}
 .photo-caption{display:flex;flex-direction:column;gap:5px;color:#fff;font-size:11px;letter-spacing:.6px}
 .photo-caption span{font-size:10px;color:#d7edf2}
 .satellite-tag{align-self:flex-end;background:#08283bd9;color:#baf7ef;border:1px solid #6ce0d455;border-radius:8px;padding:9px 12px;font-size:10px;letter-spacing:1px}
@@ -321,7 +341,10 @@ button,a{-webkit-tap-highlight-color:transparent}
   </div>
 
   <div class="ocean-visual ocean-photo" aria-label="Illustration cartographique du littoral de Béni Haoua">
-    <div class="photo-caption"><b>OBSERVATION MARINE & TÉLÉDÉTECTION</b><span>Illustration satellitaire — 15 octobre 2026</span></div>
+    <div class="photo-caption">
+  <b>MARISATEL — OBSERVATION MARINE & TÉLÉDÉTECTION</b>
+  <span>Imagerie satellitaire du littoral de Béni Haoua</span>
+</div>
     <div class="satellite-tag">MARISATEL · INTELLIGENCE MARINE</div>
   </div>
 </section>
