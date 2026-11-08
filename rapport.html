@@ -1,30 +1,622 @@
 <!doctype html>
-<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Rapport scientifique | MARISATEL</title><meta name="description" content="MARISATEL — prototype académique de cartographie et d'aide à la présélection de sites aquacoles marins.">
-<link rel="stylesheet" href="assets/style.css"></head><body>
-<div class="shell"><aside class="sidebar"><a class="brand" href="index.html" style="color:inherit;text-decoration:none"><img class="brandmark brand-image" src="Marisatel_logo_transparent_fixed.png" alt="Logo MARISATEL"><div><strong>MARISATEL</strong><small>INTELLIGENCE MARINE</small></div></a>
-<div class="navlabel">Navigation principale</div><nav class="nav"><a class="" href="index.html">⌂ &nbsp; Accueil</a><a class="" href="carte.html">◎ &nbsp; Carte marine</a><a class="" href="indicateurs.html">◈ &nbsp; Indicateurs</a><a class="" href="analyse.html">⌁ &nbsp; Analyse du site</a><a class="active" href="rapport.html">▤ &nbsp; Rapport scientifique</a><a class="" href="services.html">▧ &nbsp; Services cartographiques</a><a class="" href="sources.html">⌘ &nbsp; Sources & méthode</a></nav>
-<div class="side-note"><b style="color:var(--teal)">Notre mission</b><br>Transformer des données marines documentées en cartes et analyses utiles à la présélection de sites aquacoles.</div></aside>
-<main class="main"><header class="topbar"><div><div class="eyebrow">Plateforme d’aide à la décision</div><h1>Rapport scientifique</h1><div class="muted">Zone d’étude · données · cartes · analyse · décision</div></div><div class="status">Prototype académique · données à valider</div></header>
+<html lang="fr">
 
-<section class="card" id="reportDocument"><div class="eyebrow">Rapport scientifique — modèle à compléter</div><h2>Présélection d’un site potentiel d’aquaculture marine</h2>
-<div class="report-block"><h3>1. Présentation de la zone d’étude</h3><p id="reportZone">Zone : Béni Haoua — Chlef. À compléter par les coordonnées, limites géographiques, caractéristiques côtières et justification du choix de la zone.</p></div>
-<div class="report-block"><h3>2. Données et méthodologie</h3><p>Pour chaque variable, préciser le fournisseur, le nom du produit, la date ou période, l’unité, la résolution, la méthode de traitement et les contrôles qualité. Les données de dates différentes ne doivent pas être présentées comme simultanées.</p></div>
-<div class="report-block"><h3>3. Résultats par indicateur</h3><div class="table-wrap"><table><thead><tr><th>Indicateur</th><th>Unité</th><th>Source / période</th><th>Résultat</th><th>État</th></tr></thead><tbody id="reportResults">
-<tr><td>Température SST</td><td>°C</td><td>À renseigner</td><td>Non calculé</td><td>Carte à intégrer</td></tr>
-<tr><td>Chlorophylle-a</td><td>mg/m³</td><td>À renseigner</td><td>Non calculé</td><td>Carte à intégrer</td></tr>
-<tr><td>Salinité</td><td>PSU / unité source</td><td>À renseigner</td><td>Non calculé</td><td>Source à confirmer</td></tr>
-<tr><td>Bathymétrie</td><td>m</td><td>EMODnet ou source validée</td><td>Non calculé</td><td>Couche à intégrer</td></tr>
-<tr><td>Oxygène dissous</td><td>mg/L ou unité source</td><td>À renseigner</td><td>Non calculé</td><td>Source à confirmer</td></tr>
-<tr><td>Courants</td><td>m/s</td><td>À renseigner</td><td>Non calculé</td><td>Couche à intégrer</td></tr>
-<tr><td>Vagues</td><td>m</td><td>À renseigner</td><td>Non calculé</td><td>Couche à intégrer</td></tr>
-<tr><td>Turbidité</td><td>Selon produit</td><td>À renseigner</td><td>Non calculé</td><td>Unité à confirmer</td></tr>
-</tbody></table></div><p>Une carte et une légende distinctes devront être insérées pour chaque variable après validation des couches. Les classes de couleur doivent correspondre aux seuils explicitement cités dans la méthodologie.</p></div>
-<div class="report-block" id="computedAnalysis"><p>Chargement des statistiques des fichiers MARISATEL…</p></div>
-<div class="report-block"><h3>5. Décision et recommandations</h3><p><b>État actuel : conclusion impossible à établir.</b> Le prototype ne dispose pas encore de toutes les couches validées ni des seuils documentés nécessaires à une décision scientifique. Après intégration, la conclusion devra distinguer site potentiellement favorable, site à approfondir et site défavorable, avec justification pour chaque critère.</p></div>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>Rapport scientifique | MARISATEL</title>
+
+<meta name="description" content="Rapport scientifique MARISATEL : analyse des données environnementales et océanographiques pour la présélection des sites aquacoles marins.">
+
+<link rel="stylesheet" href="assets/style.css">
+
+<style>
+.report-document {
+    background: #fff;
+    padding: 30px;
+    border-radius: 16px;
+    border: 1px solid #e1eaf0;
+}
+
+.report-intro {
+    padding: 22px;
+    background: #edf7fa;
+    border-left: 4px solid #18b9ad;
+    border-radius: 8px;
+    margin-bottom: 28px;
+    line-height: 1.8;
+}
+
+.report-block {
+    margin: 30px 0;
+}
+
+.report-block h3 {
+    color: #123b50;
+    font-size: 19px;
+    margin-bottom: 14px;
+}
+
+.report-block p {
+    line-height: 1.8;
+    color: #526779;
+}
+
+.report-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    font-size: 13px;
+}
+
+.report-table th {
+    background: #153d52;
+    color: white;
+    padding: 13px;
+    text-align: left;
+}
+
+.report-table td {
+    padding: 13px;
+    border-bottom: 1px solid #e6edf1;
+    vertical-align: top;
+}
+
+.report-table tr:nth-child(even) {
+    background: #f5f9fb;
+}
+
+.status-available {
+    color: #16865d;
+    font-weight: 600;
+}
+
+.status-pending {
+    color: #b7791f;
+    font-weight: 600;
+}
+
+.report-note {
+    padding: 16px;
+    background: #fff8e9;
+    border: 1px solid #f0dfb8;
+    border-radius: 8px;
+    margin-top: 18px;
+    line-height: 1.7;
+    color: #705b2b;
+}
+
+.report-map-placeholder {
+    padding: 24px;
+    background: #f4f8fa;
+    border: 1px dashed #a9c2ce;
+    border-radius: 10px;
+    text-align: center;
+    color: #607989;
+    margin-top: 12px;
+}
+
+.report-conclusion {
+    padding: 22px;
+    background: #edf7f7;
+    border-radius: 10px;
+    border-left: 4px solid #18b9ad;
+}
+
+.report-subtitle {
+    color: #6b8290;
+    font-size: 13px;
+    margin-top: 5px;
+}
+
+@media(max-width:750px) {
+    .report-document {
+        padding: 16px;
+    }
+
+    .report-table {
+        font-size: 11px;
+    }
+
+    .report-table th,
+    .report-table td {
+        padding: 8px;
+    }
+}
+
+@media print {
+    .sidebar,
+    .topbar,
+    .actions,
+    .notice,
+    .no-print {
+        display: none !important;
+    }
+
+    .main {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .report-document {
+        border: none;
+        padding: 0;
+    }
+
+    body {
+        background: white !important;
+    }
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="shell">
+
+<aside class="sidebar">
+
+<a class="brand" href="index.html" style="color:inherit;text-decoration:none">
+
+<img class="brandmark brand-image"
+src="Marisatel_logo_transparent.png"
+alt="Logo MARISATEL">
+
+<div>
+<strong>MARISATEL</strong>
+<small>INTELLIGENCE MARINE</small>
+</div>
+
+</a>
+
+<div class="navlabel">Navigation principale</div>
+
+<nav class="nav">
+
+<a href="index.html">⌂ &nbsp; Accueil</a>
+<a href="carte.html">◎ &nbsp; Carte marine</a>
+<a href="indicateurs.html">◈ &nbsp; Indicateurs</a>
+<a href="analyse.html">⌁ &nbsp; Analyse du site</a>
+<a class="active" href="rapport.html">▤ &nbsp; Rapport scientifique</a>
+<a href="services.html">▧ &nbsp; Services cartographiques</a>
+<a href="sources.html">⌘ &nbsp; Sources & méthode</a>
+
+</nav>
+
+<div class="side-note">
+<b style="color:var(--teal)">Notre mission</b><br>
+Transformer des données marines documentées en cartes et analyses utiles à la présélection de sites aquacoles.
+</div>
+
+</aside>
+
+
+<main class="main">
+
+<header class="topbar">
+
+<div>
+<div class="eyebrow">Plateforme d’aide à la décision</div>
+<h1>Rapport scientifique</h1>
+<div class="muted">
+Zone d’étude · Données · Résultats · Analyse · Recommandations
+</div>
+</div>
+
+<div class="status">
+Prototype académique · Données documentées
+</div>
+
+</header>
+
+
+<section class="card report-document" id="reportDocument">
+
+<div class="eyebrow">MARISATEL — Rapport d'analyse environnementale</div>
+
+<h2>Présélection d’un site potentiel d’aquaculture marine</h2>
+
+<div class="report-intro">
+
+<b>Objet du rapport</b>
+
+<p>
+Ce rapport présente une démarche d'analyse des paramètres
+environnementaux et océanographiques du littoral de Béni Haoua,
+dans la wilaya de Chlef, en Algérie.
+
+La plateforme MARISATEL vise à centraliser les données
+géographiques, satellitaires et océanographiques afin de
+contribuer à la présélection de zones potentielles d'aquaculture
+marine.
+</p>
+
+</div>
+
+
+<!-- 1 -->
+
+<div class="report-block">
+
+<h3>1. Présentation de la zone d’étude</h3>
+
+<p>
+La zone d'étude concerne le secteur côtier de Béni Haoua,
+dans la wilaya de Chlef, sur le littoral méditerranéen algérien.
+Le secteur de Ténès constitue également un repère géographique
+pour l'observation et la comparaison des conditions côtières.
+</p>
+
+<p>
+L'étude repose sur l'exploitation de données environnementales,
+de produits satellitaires et de données océanographiques
+afin de caractériser plusieurs paramètres susceptibles
+d'influencer les conditions d'élevage marin.
+</p>
+
+<p>
+La délimitation géographique définitive de la zone devra être
+précisée à partir des coordonnées et des limites spatiales
+retenues pour les traitements cartographiques.
+</p>
+
+</div>
+
+
+<!-- 2 -->
+
+<div class="report-block">
+
+<h3>2. Données et méthodologie</h3>
+
+<p>
+Les données utilisées dans MARISATEL proviennent de plusieurs
+sources complémentaires. Elles sont organisées par variable,
+période d'observation, unité et origine du produit.
+</p>
+
+<table class="report-table">
+
+<thead>
+<tr>
+<th>Paramètre</th>
+<th>Source / produit</th>
+<th>Période disponible</th>
+<th>Nature des données</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr>
+<td>Chlorophylle-a</td>
+<td>Copernicus Marine — OCEANCOLOUR_MED_BGC_HR_L3_NRT_009_205</td>
+<td>Juin 2026</td>
+<td>Produit satellitaire dérivé d'observations MSI</td>
+</tr>
+
+<tr>
+<td>Température SST</td>
+<td>Fichiers MARISATEL — données SST</td>
+<td>Juin 2026 et 23/06/2026</td>
+<td>Données de température de surface</td>
+</tr>
+
+<tr>
+<td>Salinité</td>
+<td>Copernicus Marine — MEDSEA_MULTIYEAR_PHY_006_004</td>
+<td>23/06/2026</td>
+<td>Réanalyse océanographique</td>
+</tr>
+
+<tr>
+<td>Courants marins</td>
+<td>Fichier MARISATEL — vitesse du courant</td>
+<td>23/06/2026</td>
+<td>Données de modèle océanographique</td>
+</tr>
+
+<tr>
+<td>Bathymétrie</td>
+<td>EMODnet</td>
+<td>À préciser selon le produit téléchargé</td>
+<td>Données bathymétriques</td>
+</tr>
+
+<tr>
+<td>Turbidité</td>
+<td>Fichier MARISATEL — turbidité</td>
+<td>Juin 2026</td>
+<td>Produit environnemental à documenter</td>
+</tr>
+
+<tr>
+<td>Oxygène dissous</td>
+<td>Fichier MARISATEL — oxygène dissous</td>
+<td>Juin 2026</td>
+<td>Données océanographiques</td>
+</tr>
+
+<tr>
+<td>Hauteur des vagues</td>
+<td>Fichier MARISATEL — hauteur moyenne des vagues</td>
+<td>Juin 2026</td>
+<td>Données océanographiques</td>
+</tr>
+
+</tbody>
+</table>
+
+<div class="report-note">
+
+<b>Précaution méthodologique :</b>
+
+Les paramètres ne proviennent pas tous directement de
+l'observation satellitaire. La salinité et les courants,
+par exemple, peuvent provenir de produits de modélisation
+ou de réanalyse océanographique.
+
+Les dates et les périodes des différents produits doivent
+être prises en compte avant toute comparaison.
+
+</div>
+
+</div>
+
+
+<!-- 3 -->
+
+<div class="report-block">
+
+<h3>3. Résultats par indicateur</h3>
+
+<p>
+Les fichiers de données disponibles permettent de documenter
+plusieurs variables environnementales. Les statistiques
+numériques doivent être calculées à partir des fichiers
+originaux et contrôlées avant leur interprétation.
+</p>
+
+<div class="table-wrap">
+
+<table class="report-table">
+
+<thead>
+<tr>
+<th>Indicateur</th>
+<th>Unité</th>
+<th>Fichier de données</th>
+<th>Disponibilité</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr>
+<td>Température SST</td>
+<td>°C</td>
+<td>Marisatel_SST_Juin2026.csv</td>
+<td class="status-available">Données disponibles</td>
+</tr>
+
+<tr>
+<td>Chlorophylle-a</td>
+<td>mg/m³</td>
+<td>Chlorophylle_a_carte_Juin2026.csv</td>
+<td class="status-available">Données disponibles</td>
+</tr>
+
+<tr>
+<td>Salinité</td>
+<td>PSU</td>
+<td>Salinite_23-06-2026.csv</td>
+<td class="status-available">Données disponibles</td>
+</tr>
+
+<tr>
+<td>Courants marins</td>
+<td>m/s</td>
+<td>Vitesse_courant_23-06-2026.csv</td>
+<td class="status-available">Données disponibles</td>
+</tr>
+
+<tr>
+<td>Bathymétrie</td>
+<td>m</td>
+<td>Produit EMODnet</td>
+<td class="status-pending">Intégration à finaliser</td>
+</tr>
+
+<tr>
+<td>Turbidité</td>
+<td>Selon le produit</td>
+<td>Turbidite_carte_Juin2026.csv</td>
+<td class="status-available">Données disponibles</td>
+</tr>
+
+<tr>
+<td>Oxygène dissous</td>
+<td>Selon le produit</td>
+<td>Oxygene_dissous_moyen_Juin2026.csv</td>
+<td class="status-available">Données disponibles</td>
+</tr>
+
+<tr>
+<td>Hauteur des vagues</td>
+<td>m</td>
+<td>Hauteur_vague_moyenne_Juin2026.csv</td>
+<td class="status-available">Données disponibles</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+
+<!-- 4 -->
+
+<div class="report-block">
+
+<h3>4. Cartographie et interprétation spatiale</h3>
+
+<p>
+La représentation cartographique constitue un élément essentiel
+de l'analyse. Chaque indicateur doit être associé à sa propre
+carte thématique, à sa légende, à son unité et à sa source.
+</p>
+
+<div class="report-map-placeholder">
+
+<b>Cartes thématiques MARISATEL</b>
+
+<p>
+Les cartes de référence sont consultables dans les pages
+dédiées aux différents indicateurs de la plateforme.
+</p>
+
+<a href="carte.html">Consulter la carte marine</a>
+
+</div>
+
+<p>
+Les observations ponctuelles issues des fichiers CSV ne doivent
+pas être confondues avec une surface continue interpolée.
+Toute interpolation ou classification spatiale doit être
+justifiée par une méthode documentée.
+</p>
+
+</div>
+
+
+<!-- 5 -->
+
+<div class="report-block" id="computedAnalysis">
+
+<h3>5. Synthèse statistique des données</h3>
+
+<p>
+Chargement des statistiques des fichiers MARISATEL…
+</p>
+
+</div>
+
+
+<!-- 6 -->
+
+<div class="report-block">
+
+<h3>6. Décision et recommandations</h3>
+
+<div class="report-conclusion">
+
+<b>État actuel de l'analyse</b>
+
+<p>
+Les données disponibles constituent une première base
+d'observation et de caractérisation environnementale
+du secteur côtier étudié.
+
+Cependant, une décision définitive sur l'aptitude
+aquacole d'un site ne peut être établie qu'après
+la validation de l'ensemble des couches spatiales,
+la vérification des unités, l'analyse des périodes
+et la confrontation avec des mesures de terrain.
+</p>
+
+<p>
+La poursuite de l'étude devra notamment porter sur
+l'intégration de la bathymétrie, le contrôle de qualité
+des produits, la comparaison des paramètres et
+la justification des critères de sélection à partir
+de références scientifiques.
+</p>
+
+</div>
+
+</div>
+
+
+<!-- 7 -->
+
+<div class="report-block">
+
+<h3>7. Limites de l'étude</h3>
+
+<ul style="line-height:2;color:#526779">
+
+<li>Disponibilité variable des produits satellitaires.</li>
+
+<li>Différences de dates et de résolutions entre les données.</li>
+
+<li>Origines différentes des observations et des modèles.</li>
+
+<li>Nécessité de contrôler les unités et les métadonnées.</li>
+
+<li>Besoin de mesures in situ pour renforcer la validation.</li>
+
+</ul>
+
+</div>
+
 </section>
-<div class="actions no-print"><button class="primary" id="printReport">Imprimer / enregistrer en PDF</button><a class="btn" href="indicateurs.html">Vérifier les indicateurs</a></div>
-<div class="notice info no-print">Les résultats sont calculés automatiquement depuis les fichiers CSV présents dans le dépôt. Vérifier les sources et la cohérence temporelle avant utilisation dans le mémoire.</div>
 
-<footer class="footer"><b>MARISATEL · INTELLIGENCE MARINE</b><br>Prototype de mémoire — littoral algérien. Les cartes thématiques définitives seront activées après intégration et contrôle des produits spatiaux. <a href="sources.html">Sources et limites</a>.</footer></main></div>
-<script src="assets/app.js"></script></body></html>
+
+<div class="actions no-print">
+
+<button class="primary" id="printReport">
+Imprimer / enregistrer en PDF
+</button>
+
+<a class="btn" href="indicateurs.html">
+Consulter les indicateurs
+</a>
+
+<a class="btn" href="sources.html">
+Consulter les sources
+</a>
+
+</div>
+
+
+<div class="notice info no-print">
+
+Les résultats présentés dans ce rapport doivent être interprétés
+en fonction de la disponibilité, de la période et de la qualité
+des données utilisées. Les valeurs statistiques sont à vérifier
+à partir des fichiers sources.
+
+</div>
+
+
+<footer class="footer">
+
+<b>MARISATEL · INTELLIGENCE MARINE</b><br>
+
+Plateforme d'aide à la décision pour l'étude
+et la présélection des sites potentiels d'aquaculture marine
+sur le littoral algérien.
+
+<a href="sources.html">Sources et limites</a>
+
+</footer>
+
+</main>
+</div>
+
+
+<script src="assets/app.js"></script>
+
+<script>
+document.getElementById("printReport").addEventListener("click", function(){
+    window.print();
+});
+</script>
+
+</body>
+</html>
