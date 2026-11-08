@@ -245,27 +245,29 @@ button,a{-webkit-tap-highlight-color:transparent}
   .section-title{align-items:flex-start;flex-direction:column}
   .footer{padding:20px 17px}
 }
-..brand-image{
+.brand-image{
   width:52px;
   height:52px;
   object-fit:contain;
   background:transparent;
   padding:0;
-  border-radius:50%;
-  overflow:hidden;
+  border-radius:0;
+  overflow:visible;
   flex-shrink:0;
 }
-.ocean-photo{
-  min-height:300px;
-  border-radius:14px;
-  background:
-    linear-gradient(0deg,rgba(3,24,42,.55),rgba(3,24,42,.08)),
-    url("image_satellite_reelle_Tenes_Beni_Haoua_Sentinel2C_2026-10-13.png")
-    center/cover no-repeat;
-  display:flex;
-  flex-direction:column;
-  justify-content:space-between;
-  padding:18px;
+.ocean-photo {
+    min-height: 300px;
+    border-radius: 14px;
+    background-image:
+        linear-gradient(rgba(3,24,42,0.20), rgba(3,24,42,0.20)),
+        url("./image_satellite_reelle_Tenes_Beni_Haoua_Sentinel2C_2026-10-13.png");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 18px;
 }
 .photo-caption{display:flex;flex-direction:column;gap:5px;color:#fff;font-size:11px;letter-spacing:.6px}
 .photo-caption span{font-size:10px;color:#d7edf2}
@@ -279,7 +281,7 @@ button,a{-webkit-tap-highlight-color:transparent}
 
 <aside class="sidebar">
   <a class="brand" href="index.html">
-    <img class="brandmark brand-image" src="Marisatel_logo_transparent_fixed.png" alt="Logo MARISATEL">
+   <img class="brandmark brand-image" src="Marisatel_logo_transparent.png" alt="Logo MARISATEL">
     <div>
       <strong>MARISATEL</strong>
       <small>INTELLIGENCE MARINE</small>
