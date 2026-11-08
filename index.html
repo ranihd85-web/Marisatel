@@ -273,7 +273,30 @@ button,a{-webkit-tap-highlight-color:transparent}
 .photo-caption span{font-size:10px;color:#d7edf2}
 .satellite-tag{align-self:flex-end;background:#08283bd9;color:#baf7ef;border:1px solid #6ce0d455;border-radius:8px;padding:9px 12px;font-size:10px;letter-spacing:1px}
 @media(max-width:850px){.hero{grid-template-columns:1fr}.ocean-photo{min-height:220px}}
-</style>
+.hero-title {
+    font-family: 'Orbitron', 'Arial', sans-serif;
+    font-size: clamp(28px, 4vw, 54px);
+    font-weight: 700;
+    line-height: 1.4;
+    color: #ffffff;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    text-shadow: 0 3px 15px rgba(0,0,0,0.6);
+}
+
+.hero-title span {
+    display: block;
+    color: #35e0d0;
+    font-size: 0.48em;
+    letter-spacing: 5px;
+    margin: 12px 0;
+}
+
+.hero-title strong {
+    display: block;
+    font-size: 0.72em;
+    color: #ffffff;
+}</style>
 </head>
 
 <body>
@@ -328,13 +351,10 @@ button,a{-webkit-tap-highlight-color:transparent}
 <section class="hero">
   <div>
     <div class="eyebrow">Observer · Analyser · Décider</div>
-    <h2>L’intelligence marine au service d’une <span>aquaculture durable.</span></h2>
-    <p>
-      MARISATEL est un prototype de plateforme d’aide à la décision destiné
-      à la présélection de sites potentiels d’aquaculture marine sur le
-      littoral algérien. Il réunit progressivement des données géographiques,
-      des observations satellitaires et des produits océanographiques documentés.
-    </p>
+  <h1 class="hero-title">
+  MARISATEL
+  <span>INTELLIGENCE MARINE</span>
+
     <div class="actions">
       <a class="btn primary" href="carte.html">Explorer la carte marine ↗</a>
       <a class="btn" href="analyse.html">Étudier un site</a>
