@@ -248,10 +248,49 @@ candidates:["value","salinity_value","salinity","sss","salinite"],
   }
 
   const map=L.map("marineMap").setView(zoneCenters.beni,9);
-  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{
-    maxZoom:18,
-    attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-  }).addTo(map);
+// MARISATEL — Fonds cartographiques
+
+// Carte classique
+const classicLayer = L.tileLayer(
+  "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+  {
+    maxZoom: 19,
+    attribution: "&copy; OpenStreetMap contributors"
+  }
+);
+
+// Images satellites
+const satelliteLayer = L.tileLayer(
+  "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+  {
+    maxZoom: 19,
+    attribution: "Tiles &copy; Esri"
+  }
+);
+
+// Relief
+const reliefLayer = L.tileLayer(
+  "https://server.arcgisonline.com/ArcGIS/rest/services/World_Shaded_Relief/MapServer/tile/{z}/{y}/{x}",
+  {
+    maxZoom: 13,
+    attribution: "Tiles &copy; Esri"
+  }
+);
+
+// Fond initial
+classicLayer.addTo(map);
+
+// Menu de sélection des cartes
+const baseMaps = {
+  "Carte classique": classicLayer,
+  "Satellite": satelliteLayer,
+  "Relief": reliefLayer
+};
+
+L.control.layers(baseMaps, null, {
+  collapsed: false,
+  position: "topright"
+}).addTo(map);
 
   let markers=L.layerGroup().addTo(map);
   let allData=[];
