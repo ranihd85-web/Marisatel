@@ -322,7 +322,63 @@ button,a{-webkit-tap-highlight-color:transparent}
     border-radius: 16px !important;
     box-shadow: 0 5px 18px rgba(10,45,65,.06);
 }
-</style>
+/* MARISATEL — Correction de la page d'accueil */
+
+/* إزالة الخلفية الزرقاء من محيط البطاقات */
+.content {
+    background: #f1f6fa !important;
+}
+
+/* إزالة الإطار الكبير */
+.content > .hero {
+    margin-bottom: 28px !important;
+}
+
+/* إزالة الفراغات الزائدة */
+.content > .section-title {
+    margin: 24px 0 18px !important;
+    padding: 0 !important;
+    background: transparent !important;
+}
+
+/* تنسيق البطاقات */
+.content .grid.three {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 18px !important;
+    margin: 0 0 28px !important;
+    background: transparent !important;
+}
+
+/* جعل البطاقات متساوية */
+.content .grid.three .card {
+    background: white !important;
+    border-radius: 16px !important;
+    padding: 24px !important;
+    height: 100% !important;
+    box-sizing: border-box !important;
+}
+
+/* إظهار العناوين بوضوح */
+.content .section-title h2 {
+    color: #102d46 !important;
+}
+
+.content .section-title p {
+    color: #647b8d !important;
+}
+
+/* خلفية فاتحة للقسم السفلي */
+.content > .notice {
+    margin-top: 24px !important;
+}
+
+/* توافق مع الهاتف */
+@media (max-width: 850px) {
+    .content .grid.three {
+        grid-template-columns: 1fr !important;
+    }
+}</style>
 </head>
 
 <body>
