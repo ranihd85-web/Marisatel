@@ -333,14 +333,21 @@ const baseMaps = {
   "Relief": reliefLayer
 };
 
+// Menu de sélection des cartes
+const baseMaps = {
+    "Carte classique": classicLayer,
+    "Satellite": satelliteLayer,
+    "Relief": reliefLayer
+};
+
 L.control.layers(baseMaps).addTo(map);
-  // Échelle des distances en kilomètres
+
+// Échelle des distances
 L.control.scale({
     metric: true,
     imperial: false,
     position: "bottomleft"
 }).addTo(map);
-
 // Recherche géographique
 if (L.Control && L.Control.geocoder) {
     L.Control.geocoder({
