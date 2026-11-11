@@ -378,6 +378,34 @@ button,a{-webkit-tap-highlight-color:transparent}
     .content .grid.three {
         grid-template-columns: 1fr !important;
     }
+}/* Suppression des espaces et du grand fond sombre */
+
+.main > .content {
+    background: #f1f6fa !important;
+    padding: 0 24px 30px !important;
+    margin: 0 !important;
+}
+
+/* Coller l'image sous l'en-tête */
+.main > .content > .hero {
+    margin-top: 0 !important;
+    margin-bottom: 24px !important;
+}
+
+/* Supprimer le fond sombre derrière les cartes */
+.main > .content > .grid.three,
+.main > .content > .section-title {
+    background: transparent !important;
+}
+
+/* Garder les cartes blanches et régulières */
+.main > .content > .grid.three .card {
+    background: #fff !important;
+}
+
+/* Réduire l'espace autour du contenu */
+.main {
+    padding-bottom: 0 !important;
 }</style>
 </head>
 
