@@ -333,7 +333,7 @@ const baseMaps = {
   "Relief": reliefLayer
 };
 
-L.control.layers(baseMaps, null, {
+L.control.layers(baseMaps).addTo(map);
   // Échelle des distances en kilomètres
 L.control.scale({
     metric: true,
