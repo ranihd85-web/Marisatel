@@ -406,6 +406,57 @@ button,a{-webkit-tap-highlight-color:transparent}
 /* Réduire l'espace autour du contenu */
 .main {
     padding-bottom: 0 !important;
+}/* MARISATEL - Correction de la mise en page */
+
+.main {
+    padding: 0 !important;
+    margin: 0 !important;
+    background: #f1f6fa !important;
+    min-width: 0 !important;
+}
+
+.content {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 20px 24px 0 !important;
+    background: #f1f6fa !important;
+    border-radius: 0 !important;
+    min-height: auto !important;
+}
+
+/* Image principale */
+.content > .hero {
+    margin: 0 0 24px !important;
+}
+
+/* Suppression du fond bleu derrière les cartes */
+.content > .grid.three,
+.content > .section-title {
+    background: transparent !important;
+}
+
+/* Cartes */
+.content .grid.three .card {
+    background: #ffffff !important;
+}
+
+/* Suppression de l'espace avant le pied de page */
+.content {
+    padding-bottom: 0 !important;
+}
+
+.footer {
+    margin-top: 0 !important;
+}
+
+/* Adaptation à la largeur de l'écran */
+@media (min-width: 851px) {
+    .main,
+    .content {
+        width: 100% !important;
+        max-width: none !important;
+    }
 }</style>
 </head>
 
