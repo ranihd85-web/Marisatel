@@ -12,7 +12,10 @@
 <div class="grid two" style="margin-top:16px">
 <section class="card"><div class="icon">🌡️</div><h2>Température de surface (SST)</h2><p>La température varie selon la saison, la profondeur de mesure et la qualité du pixel. Comparer les résultats aux besoins de l’espèce et aux mesures de terrain.</p>
 <div class="grid two"><div><div class="muted small">Unité</div><strong>°C</strong></div><div><div class="muted small">Type de source</div><strong>Produit satellitaire</strong></div></div>
-<div class="notice info">Statut actuel : la carte thématique n’est pas encore intégrée. Aucun résultat spatial ni valeur au clic ne sera inventé.</div>
+<div class="notice info">
+  La couche cartographique est en cours de validation.
+  Les valeurs affichées dépendent des données disponibles et de leurs métadonnées.
+</div>
 </section>
 <section class="card"><h3>Carte thématique interactive</h3>
     <p class="muted">Points disponibles dans le fichier de données intégré. Cliquez sur un point pour voir sa valeur, sa date et sa source. Les points représentent les données disponibles et non une interpolation continue.</p>
@@ -20,11 +23,32 @@
     <div id="mapStatus" class="notice info">Chargement des données…</div>
     <div class="table-wrap"><table id="dataTable"><thead><tr><th>Date/période</th><th>Latitude</th><th>Longitude</th><th>Valeur (°C)</th><th>Source / qualité</th></tr></thead><tbody></tbody></table></div>
     </section>
+<div class="section-title">
+  <h2>Échelle d’interprétation</h2>
+  <p>Interprétation selon les exigences biologiques des espèces élevées.</p>
 </div>
-<div class="section-title"><h2>Échelle d’interprétation</h2><p>Repères de travail — validation documentaire obligatoire</p></div>
-<div class="legend"><span class="good"><b>Favorable</b><br>23–27 °C (repère de littérature à vérifier)</span><span class="moderate"><b>À surveiller</b><br>hors de la plage optimale mais dans la tolérance de l’espèce</span><span class="bad"><b>Défavorable potentiel</b><br>dépassement des limites confirmées pour l’espèce</span></div>
-<div class="scale"></div><div class="scale-labels"><span>Bas / limite inférieure selon variable</span><span>Échelle qualitative provisoire</span><span>Haut / limite supérieure selon variable</span></div>
-<div class="notice"><b>À valider avant la version finale :</b> Repère indicatif issu de littérature sur la daurade/loup cité dans les documents consultés; il doit être confronté au tableau exact retenu dans le mémoire et à la saison. Cette échelle ne doit pas être présentée comme une classification définitive tant que les seuils exacts du tableau méthodologique ne sont pas transcrits et sourcés.</div>
+
+<div class="legend">
+  <span class="good">
+    <b>Conditions favorables</b><br>
+    Valeurs compatibles avec les exigences de l’espèce.
+  </span>
+
+  <span class="moderate">
+    <b>À surveiller</b><br>
+    Valeurs nécessitant une attention particulière.
+  </span>
+
+  <span class="bad">
+    <b>Conditions défavorables</b><br>
+    Valeurs dépassant les limites de tolérance documentées.
+  </span>
+</div>
+
+<div class="notice info">
+  Les seuils précis doivent être définis selon l’espèce,
+  la saison et les références scientifiques retenues.
+</div>
 <div class="section-title"><h2>Fiche de traçabilité</h2><p>À remplir lors de l’ajout du produit</p></div>
 <div class="table-wrap"><table><tbody>
 <tr><th>Variable</th><td>Température de surface (SST)</td></tr><tr><th>Unité</th><td>°C</td></tr><tr><th>Source / produit</th><td>À renseigner depuis la fiche officielle du produit</td></tr><tr><th>Période et date</th><td>À lire dans les métadonnées du fichier téléchargé</td></tr><tr><th>Résolution spatiale</th><td>À confirmer depuis les métadonnées</td></tr><tr><th>Contrôle qualité</th><td>À documenter avant interprétation</td></tr>
@@ -38,7 +62,11 @@
        style="display:block;width:100%;height:auto;max-height:760px;object-fit:contain;border-radius:10px;border:1px solid #dce7ed">
   <p class="muted small" style="margin-top:10px">Température · °C. Cette image est datée du 15 octobre 2026 ; elle est distincte des tableaux CSV de juin 2026 et ne doit pas être interprétée comme une carte de juin.</p>
 </section>
-<footer class="footer"><b>MARISATEL · INTELLIGENCE MARINE</b><br>Prototype de mémoire — littoral algérien. Les cartes thématiques définitives seront activées après intégration et contrôle des produits spatiaux. <a href="sources.html">Sources et limites</a>.</footer>\1
+<footer class="footer"><b>MARISATEL · INTELLIGENCE MARINE</b><br>Prototype de mémoire — littoral algérien. Les cartes thématiques définitives seront activées après intégration et contrôle des produits spatiaux. <a href="sources.html">Sources et limites</a>.</footer>
+</main>
+</div>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="assets/app.js"></script>
+</body>
+</html>
 </body></html>
