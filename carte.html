@@ -32,7 +32,41 @@
 .brand-logo{width:43px;height:43px;object-fit:contain;border-radius:9px;background:#fff}
 @media(max-width:900px){.map-layout{grid-template-columns:1fr;margin:16px}.map-panel,.map-main{padding:15px}#marineMap{height:400px}}
 @media(max-width:600px){#marineMap{height:330px}.topbar{padding:15px}}
-</style>
+/* MARISATEL - Outils cartographiques */
+
+.map-tools {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin: 12px 0;
+}
+
+.map-tools button {
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: #f1f7fa;
+    color: var(--navy);
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.map-tools button:hover {
+    background: #dff5f3;
+    border-color: var(--teal);
+}
+
+#marineMap:fullscreen {
+    width: 100vw !important;
+    height: 100vh !important;
+    border-radius: 0;
+}
+
+@media(max-width:600px) {
+    .map-tools button {
+        flex: 1 1 100%;
+    }
+}</style>
 </head>
 
 <body>
@@ -125,7 +159,17 @@
   <section class="map-main">
     <h2>Carte interactive</h2>
     <p class="map-description">Cliquez sur un point pour afficher sa valeur, ses coordonnées et les métadonnées disponibles.</p>
-    <div id="marineMap" aria-label="Carte interactive des observations marines"></div>
+   <div class="map-tools no-print">
+    <button type="button" id="fullscreenMap">⛶ Plein écran</button>
+    <button type="button" id="exportCSV">↓ Télécharger CSV</button>
+    <button type="button" id="exportPNG">▧ Exporter la carte PNG</button>
+</div>
+
+<p class="map-description">
+    Recherche géographique en haut à gauche · Échelle en kilomètres en bas à gauche.
+</p>
+
+<div id="marineMap" aria-label="Carte interactive des observations marines"></div>
     <div class="map-table-wrap">
       <table class="map-table">
         <thead>
@@ -159,6 +203,8 @@
 </div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+<script src="https://unpkg.com/leaflet-image/leaflet-image.js"></script>
 <script>
 (function(){
   const zoneCenters={
@@ -288,13 +334,152 @@ const baseMaps = {
 };
 
 L.control.layers(baseMaps, null, {
+  // Échelle des distances en kilomètres
+L.control.scale({
+    metric: true,
+    imperial: false,
+    position: "bottomleft"
+}).addTo(map);
+
+// Recherche géographique
+if (L.Control && L.Control.geocoder) {
+    L.Control.geocoder({
+        defaultMarkGeocode: true,
+        position: "topleft",
+        placeholder: "Rechercher une ville ou une côte...",
+        errorMessage: "Aucun lieu trouvé"
+    }).addTo(map);
+}
   collapsed: false,
   position: "topright"
 }).addTo(map);
 
   let markers=L.layerGroup().addTo(map);
   let allData=[];
+// =====================================
+// MARISATEL - Fonctions d'exportation
+// =====================================
 
+// Plein écran
+$("fullscreenMap").addEventListener("click", async () => {
+    const mapElement = $("marineMap");
+
+    try {
+        if (!document.fullscreenElement) {
+            await mapElement.requestFullscreen();
+        } else {
+            await document.exitFullscreen();
+        }
+
+        setTimeout(() => map.invalidateSize(), 300);
+
+    } catch (error) {
+        status.textContent = "Mode plein écran indisponible.";
+    }
+});
+
+document.addEventListener("fullscreenchange", () => {
+    $("fullscreenMap").textContent =
+        document.fullscreenElement
+        ? "✕ Quitter le plein écran"
+        : "⛶ Plein écran";
+
+    setTimeout(() => map.invalidateSize(), 200);
+});
+
+// Télécharger les observations en CSV
+$("exportCSV").addEventListener("click", () => {
+
+    if (!allData.length) {
+        status.textContent = "Aucune donnée disponible à exporter.";
+        return;
+    }
+
+    const header = [
+        "Date / période",
+        "Latitude",
+        "Longitude",
+        "Valeur",
+        "Unité",
+        "Source"
+    ];
+
+    const quote = value =>
+        '"' + String(value ?? "").replace(/"/g, '""') + '"';
+
+    const lines = [header.map(quote).join(",")];
+
+    allData.forEach(point => {
+        lines.push([
+            point.date,
+            point.lat,
+            point.lon,
+            point.value,
+            $("indicatorSelect").selectedOptions[0].text,
+            point.source
+        ].map(quote).join(","));
+    });
+
+    const blob = new Blob(
+        ["\uFEFF" + lines.join("\r\n")],
+        { type: "text/csv;charset=utf-8" }
+    );
+
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+
+    link.href = url;
+    link.download =
+        "MARISATEL_" +
+        $("indicatorSelect").value +
+        "_" +
+        $("mapDate").value +
+        ".csv";
+
+    link.click();
+    URL.revokeObjectURL(url);
+});
+
+// Exporter la carte en PNG
+$("exportPNG").addEventListener("click", () => {
+
+    if (typeof leafletImage !== "function") {
+        status.textContent =
+            "La bibliothèque d'exportation n'est pas disponible.";
+        return;
+    }
+
+    status.textContent = "Préparation de la carte...";
+
+    leafletImage(map, (error, canvas) => {
+
+        if (error || !canvas) {
+            status.textContent =
+                "Export impossible avec ce fond cartographique. Essayez une autre couche.";
+            return;
+        }
+
+        try {
+            const link = document.createElement("a");
+
+            link.download =
+                "MARISATEL_carte_" +
+                $("indicatorSelect").value +
+                "_" +
+                $("mapDate").value +
+                ".png";
+
+            link.href = canvas.toDataURL("image/png");
+            link.click();
+
+            status.textContent = "Carte exportée en PNG.";
+
+        } catch (error) {
+            status.textContent =
+                "Le fournisseur cartographique bloque la capture PNG.";
+        }
+    });
+});
   const $=id=>document.getElementById(id);
   const status=$("dataStatus");
   const rows=$("dataRows");
