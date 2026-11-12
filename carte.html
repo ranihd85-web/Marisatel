@@ -342,8 +342,6 @@ L.control.layers(baseMaps).addTo(map);
 L.control.scale({
     metric: true,
     imperial: false,
-    position: "bottomleft"
-}).addTo(map);
 // Recherche géographique
 if (L.Control && L.Control.geocoder) {
     L.Control.geocoder({
@@ -354,6 +352,8 @@ if (L.Control && L.Control.geocoder) {
     }).addTo(map);
 }
 
+let markers = L.layerGroup().addTo(map);
+let allData = [];
 let markers=L.layerGroup().addTo(map);
 // =====================================
 // MARISATEL - Fonctions d'exportation
