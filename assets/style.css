@@ -477,3 +477,45 @@ button {
   }
 }
 ```
+/* MARISATEL - Uniform Sidebar Design */
+
+.sidebar {
+    background: linear-gradient(
+        180deg,
+        #092238,
+        #0b2b43
+    ) !important;
+    color: #ffffff !important;
+}
+
+.sidebar .brand strong {
+    color: #ffffff !important;
+}
+
+.sidebar .brand small {
+    color: #a8c2d1 !important;
+}
+
+.sidebar .navlabel {
+    color: #87a4b7 !important;
+}
+
+.sidebar .nav a {
+    color: #d5e4ec !important;
+}
+
+.sidebar .nav a:hover,
+.sidebar .nav a.active {
+    background: #173f55 !important;
+    color: #ffffff !important;
+}
+
+.sidebar .side-note,
+.sidebar .side-bottom {
+    color: #b8cbd7 !important;
+}
+
+.sidebar .brand img {
+    object-fit: contain;
+    background: transparent !important;
+}
