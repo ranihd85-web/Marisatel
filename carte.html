@@ -1,4 +1,4 @@
-```html
+<!doctype html>
 <!doctype html>
 <html lang="fr">
 <head>
@@ -348,11 +348,12 @@ if (L.Control && L.Control.geocoder) {
         defaultMarkGeocode: true,
         position: "topleft",
         placeholder: "Rechercher une ville ou une côte...",
-        errorMessage: "Aucun lieu trouvé"
+              errorMessage: "Aucun lieu trouvé"
     }).addTo(map);
 }
 
 let markers = L.layerGroup().addTo(map);
+let allData = [];
 let allData = [];
 let markers=L.layerGroup().addTo(map);
 // =====================================
