@@ -207,6 +207,9 @@
 <script src="https://unpkg.com/leaflet-image/leaflet-image.js"></script>
 <script>
 (function(){
+    const $ = id => document.getElementById(id);
+const status = $("dataStatus");
+const rows = $("dataRows");
   const zoneCenters={
     beni:[36.56,1.57],
     tenes:[36.52,1.31],
@@ -349,10 +352,6 @@ if (L.Control && L.Control.geocoder) {
         placeholder: "Rechercher une ville ou une côte...",
         errorMessage: "Aucun lieu trouvé"
     }).addTo(map);
-}
-  collapsed: false,
-  position: "topright"
-}).addTo(map);
 
   let markers=L.layerGroup().addTo(map);
   let allData=[];
@@ -480,9 +479,6 @@ $("exportPNG").addEventListener("click", () => {
         }
     });
 });
-  const $=id=>document.getElementById(id);
-  const status=$("dataStatus");
-  const rows=$("dataRows");
 
   function parseCSV(text){
     const lines=text.replace(/^\uFEFF/,"").trim().split(/\r?\n/);
