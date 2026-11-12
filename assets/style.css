@@ -518,3 +518,34 @@ button {
     object-fit: contain;
     background: transparent !important;
 }
+/* MARISATEL - Analyse buttons */
+.actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.actions button {
+  padding: 13px 22px;
+  border-radius: 10px;
+  border: 1px solid #dce8ef;
+  background: #ffffff;
+  color: #092238;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.actions button.primary {
+  background: #20c5b3;
+  color: #092238;
+  border-color: #20c5b3;
+}
+
+.actions button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(7, 28, 46, 0.12);
+}
